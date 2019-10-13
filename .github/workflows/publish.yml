@@ -1,0 +1,30 @@
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+name: Publish
+
+jobs:
+  publish_crate:
+    name: Publish to crates.io
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest master
+        uses: actions/checkout@master
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: stable
+            override: true
+      - name: Login to crates.io
+        uses: actions-rs/cargo@v1
+        with:
+          toolchain: stable
+          command: login
+          args: ${{ secrets.CRATES_TOKEN }}
+      - name: Publish to crates.io
+        uses: actions-rs/cargo@v1
+        with:
+          toolchain: stable
+          command: publish

@@ -1,0 +1,27 @@
+on: push
+
+name: Build
+
+jobs:
+  build_and_test:
+    name: Build cloudflare-ddns
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest
+        uses: actions/checkout@master
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: stable
+            override: true
+      - name: Run tests
+        uses: actions-rs/cargo@v1
+        with:
+          toolchain: stable
+          command: test
+      - name: Cargo build
+        uses: actions-rs/cargo@v1
+        with:
+          toolchain: stable
+          command: build
+          args: --release
