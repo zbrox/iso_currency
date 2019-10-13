@@ -6,7 +6,7 @@
 
 This crate provides an enum that represents all ISO 4217 currencies and 
 has simple methods to convert between numeric and character code, list of 
-territories where each currency is used, and the English name of the currency.
+territories where each currency is used, the symbol, and the English name of the currency.
 
 The data for this is taken from 
 [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217)
