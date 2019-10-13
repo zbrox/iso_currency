@@ -2,7 +2,8 @@
 //! 
 //! This crate provides an enum that represents all ISO 4217 currencies and 
 //! has simple methods to convert between numeric and character code, list of 
-//! territories where each currency is used, and the English name of the currency.
+//! territories where each currency is used, the symbol,
+//! and the English name of the currency.
 //! 
 //! The data for this is taken from 
 //! [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217)
@@ -17,6 +18,7 @@
 //! assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
 //! assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
 //! assert_eq!(Currency::CHF.used_by(), vec!["Liechtenstein", "Switzerland"]);
+//! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! ```
 
 #[derive(PartialEq)]
@@ -200,6 +202,46 @@ pub enum Currency {
     ZAR,
     ZMW,
     ZWL,
+}
+
+#[derive(PartialEq)]
+pub struct CurrencySymbol {
+    pub symbol: String,
+    pub centesimal: Option<String>,
+}
+
+impl std::fmt::Debug for CurrencySymbol {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.symbol)
+    }
+}
+
+impl std::fmt::Display for CurrencySymbol {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.symbol)
+    }
+}
+
+impl CurrencySymbol {
+    /// Represents the commonly used symbol for a currency
+    /// 
+    /// Data for the symbols was collected from
+    /// [https://en.wikipedia.org/wiki/Currency_symbol#List_of_presently-circulating_currency_symbols]()
+    /// 
+    /// TODO: Add data about centesimal symbols for every currency
+    /// TODO: Add data about English representations of some currency symbols
+    /// TODO: Maybe add data about alternative variants of the symbols
+    /// TODO: Add data about position of symbol (according to locale) when formatting a sum of money
+    /// 
+    pub fn new(symbol: &str, centesimal: Option<&str>) -> CurrencySymbol {
+        CurrencySymbol {
+            symbol: symbol.to_owned(),
+            centesimal: match centesimal {
+                Some(v) => Some(v.to_owned()),
+                None => None,
+            }
+        }
+    }
 }
 
 impl Currency {
@@ -1093,6 +1135,174 @@ impl Currency {
         territories
     }
 
+    /// Returns the currency's symbol
+    /// 
+    /// This method will return the symbol commonly used to represent the 
+    /// currency. In case there is no symbol associated the international
+    /// currency symbol will be returned.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use iso_currency::Currency;
+    /// 
+    /// assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
+    /// assert_eq!(format!("{}", Currency::XXX.symbol()), "¤");
+    /// ```
+    pub fn symbol(&self) -> CurrencySymbol {
+        match self {
+            Currency::AED => CurrencySymbol::new("د.إ", None),
+            Currency::AFN => CurrencySymbol::new("؋", None),
+            Currency::ALL => CurrencySymbol::new("L", Some("q")),
+            Currency::AMD => CurrencySymbol::new("֏", None),
+            Currency::ANG => CurrencySymbol::new("ƒ", None),
+            Currency::AOA => CurrencySymbol::new("Kz", None),
+            Currency::ARS => CurrencySymbol::new("$", None),
+            Currency::AUD => CurrencySymbol::new("$", Some("c")),
+            Currency::AWG => CurrencySymbol::new("ƒ", None),
+            Currency::AZN => CurrencySymbol::new("₼", None),
+            Currency::BAM => CurrencySymbol::new("KM", None),
+            Currency::BBD => CurrencySymbol::new("Bds$", None),
+            Currency::BDT => CurrencySymbol::new("৳", None),
+            Currency::BGN => CurrencySymbol::new("лв.", None),
+            Currency::BHD => CurrencySymbol::new(".د.ب", None),
+            Currency::BIF => CurrencySymbol::new("FBu", None),
+            Currency::BMD => CurrencySymbol::new("$", None),
+            Currency::BND => CurrencySymbol::new("B$", None),
+            Currency::BOB => CurrencySymbol::new("Bs.", None),
+            Currency::BRL => CurrencySymbol::new("R$", None),
+            Currency::BSD => CurrencySymbol::new("$", None),
+            Currency::BTN => CurrencySymbol::new("Nu.", Some("Ch.")),
+            Currency::BWP => CurrencySymbol::new("P", None),
+            Currency::BYN => CurrencySymbol::new("Br", None),
+            Currency::BZD => CurrencySymbol::new("$", None),
+            Currency::CAD => CurrencySymbol::new("$", Some("¢")),
+            Currency::CDF => CurrencySymbol::new("₣", None),
+            Currency::CHF => CurrencySymbol::new("₣", None),
+            Currency::CLP => CurrencySymbol::new("$", None),
+            Currency::CNY => CurrencySymbol::new("¥", None),
+            Currency::COP => CurrencySymbol::new("$", None),
+            Currency::CRC => CurrencySymbol::new("₡", None),
+            Currency::CUC => CurrencySymbol::new("$", None),
+            Currency::CUP => CurrencySymbol::new("₱", None),
+            Currency::CVE => CurrencySymbol::new("Esc", None),
+            Currency::CZK => CurrencySymbol::new("Kč", Some("h")),
+            Currency::DJF => CurrencySymbol::new("₣", None),
+            Currency::DKK => CurrencySymbol::new("kr", None),
+            Currency::DOP => CurrencySymbol::new("RD$", None),
+            Currency::DZD => CurrencySymbol::new("دج", None),
+            Currency::EGP => CurrencySymbol::new("£", Some("pt")),
+            Currency::ERN => CurrencySymbol::new("Nfk", None),
+            Currency::ETB => CurrencySymbol::new("Br", None),
+            Currency::EUR => CurrencySymbol::new("€", None),
+            Currency::FJD => CurrencySymbol::new("FJ$", None),
+            Currency::FKP => CurrencySymbol::new("£", None),
+            Currency::GBP => CurrencySymbol::new("£", Some("p")),
+            Currency::GEL => CurrencySymbol::new("ლ", None),
+            Currency::GHS => CurrencySymbol::new("GH₵", None),
+            Currency::GIP => CurrencySymbol::new("£", None),
+            Currency::GMD => CurrencySymbol::new("D", None),
+            Currency::GNF => CurrencySymbol::new("₣", None),
+            Currency::GTQ => CurrencySymbol::new("Q", None),
+            Currency::GYD => CurrencySymbol::new("G$", None),
+            Currency::HKD => CurrencySymbol::new("HK$", None),
+            Currency::HNL => CurrencySymbol::new("L", None),
+            Currency::HRK => CurrencySymbol::new("kn", Some("lp")),
+            Currency::HTG => CurrencySymbol::new("G", None),
+            Currency::HUF => CurrencySymbol::new("Ft", None),
+            Currency::IDR => CurrencySymbol::new("Rp", None),
+            Currency::ILS => CurrencySymbol::new("₪", None),
+            Currency::INR => CurrencySymbol::new("₹", None),
+            Currency::IQD => CurrencySymbol::new("د.ع", None),
+            Currency::IRR => CurrencySymbol::new("﷼", None),
+            Currency::ISK => CurrencySymbol::new("kr", None),
+            Currency::JMD => CurrencySymbol::new("$", None),
+            Currency::JOD => CurrencySymbol::new("JD", None),
+            Currency::JPY => CurrencySymbol::new("¥", None),
+            Currency::KES => CurrencySymbol::new("Ksh", None),
+            Currency::KGS => CurrencySymbol::new("С̲", None),
+            Currency::KHR => CurrencySymbol::new("៛", None),
+            Currency::KMF => CurrencySymbol::new("₣", None),
+            Currency::KPW => CurrencySymbol::new("₩", None),
+            Currency::KRW => CurrencySymbol::new("₩", None),
+            Currency::KWD => CurrencySymbol::new("د.ك", None),
+            Currency::KYD => CurrencySymbol::new("$", None),
+            Currency::KZT => CurrencySymbol::new("₸", None),
+            Currency::LAK => CurrencySymbol::new("₭", None),
+            Currency::LBP => CurrencySymbol::new("LL", None),
+            Currency::LKR => CurrencySymbol::new("₨", None),
+            Currency::LRD => CurrencySymbol::new("L$", None),
+            Currency::LSL => CurrencySymbol::new("M", None),
+            Currency::LYD => CurrencySymbol::new("ل.د", None),
+            Currency::MAD => CurrencySymbol::new("د.م.", None),
+            Currency::MGA => CurrencySymbol::new("Ar", None),
+            Currency::MKD => CurrencySymbol::new("ден", None),
+            Currency::MMK => CurrencySymbol::new("K", None),
+            Currency::MNT => CurrencySymbol::new("₮", None),
+            Currency::MOP => CurrencySymbol::new("MOP$", None),
+            Currency::MRU => CurrencySymbol::new("UM", None),
+            Currency::MUR => CurrencySymbol::new("₨", None),
+            Currency::MVR => CurrencySymbol::new("Rf.", None),
+            Currency::MWK => CurrencySymbol::new("K", None),
+            Currency::MXN => CurrencySymbol::new("$", Some("¢")),
+            Currency::MYR => CurrencySymbol::new("RM", None),
+            Currency::MZN => CurrencySymbol::new("MT", None),
+            Currency::NAD => CurrencySymbol::new("N$", None),
+            Currency::NGN => CurrencySymbol::new("₦", None),
+            Currency::NIO => CurrencySymbol::new("C$", None),
+            Currency::NOK => CurrencySymbol::new("kr", None),
+            Currency::NPR => CurrencySymbol::new("₨", None),
+            Currency::NZD => CurrencySymbol::new("$", Some("c")),
+            Currency::OMR => CurrencySymbol::new("ر.ع.", None),
+            Currency::PAB => CurrencySymbol::new("B/.", None),
+            Currency::PEN => CurrencySymbol::new("S/", None),
+            Currency::PGK => CurrencySymbol::new("K", None),
+            Currency::PHP => CurrencySymbol::new("₱", None),
+            Currency::PKR => CurrencySymbol::new("₨", None),
+            Currency::PLN => CurrencySymbol::new("zł", Some("gr")),
+            Currency::PYG => CurrencySymbol::new("₲", None),
+            Currency::QAR => CurrencySymbol::new("ر.ق", None),
+            Currency::RSD => CurrencySymbol::new("дин", None),
+            Currency::RUB => CurrencySymbol::new("₽", None),
+            Currency::RWF => CurrencySymbol::new("FRw", None),
+            Currency::SAR => CurrencySymbol::new("ر.س", None),
+            Currency::SBD => CurrencySymbol::new("S$", None),
+            Currency::SCR => CurrencySymbol::new("SRe", None),
+            Currency::SEK => CurrencySymbol::new("kr", None),
+            Currency::SHP => CurrencySymbol::new("£", None),
+            Currency::SLL => CurrencySymbol::new("Le", None),
+            Currency::SOS => CurrencySymbol::new("Sh.So.", None),
+            Currency::SRD => CurrencySymbol::new("$", None),
+            Currency::STN => CurrencySymbol::new("Db", None),
+            Currency::SYP => CurrencySymbol::new("LS", None),
+            Currency::SZL => CurrencySymbol::new("E", None),
+            Currency::THB => CurrencySymbol::new("฿", None),
+            Currency::TND => CurrencySymbol::new("د.ت", None),
+            Currency::TOP => CurrencySymbol::new("T$", None),
+            Currency::TRY => CurrencySymbol::new("₺", None),
+            Currency::TTD => CurrencySymbol::new("$", None),
+            Currency::TWD => CurrencySymbol::new("NT$", None),
+            Currency::TZS => CurrencySymbol::new("Tsh", None),
+            Currency::UAH => CurrencySymbol::new("₴", None),
+            Currency::UGX => CurrencySymbol::new("USh", None),
+            Currency::USD => CurrencySymbol::new("$", Some("¢")),
+            Currency::UYU => CurrencySymbol::new("$U", None),
+            Currency::VES => CurrencySymbol::new("Bs.", None),
+            Currency::VND => CurrencySymbol::new("₫", None),
+            Currency::VUV => CurrencySymbol::new("VT", None),
+            Currency::WST => CurrencySymbol::new("WS$", None),
+            Currency::XAF => CurrencySymbol::new("FCFA", None),
+            Currency::XCD => CurrencySymbol::new("$", None),
+            Currency::XDR => CurrencySymbol::new("SDR", None),
+            Currency::XOF => CurrencySymbol::new("CFA", None),
+            Currency::XPF => CurrencySymbol::new("₣", None),
+            Currency::YER => CurrencySymbol::new("ر.ي", None),
+            Currency::ZAR => CurrencySymbol::new("R", None),
+            Currency::ZMW => CurrencySymbol::new("K", None),
+            _ => CurrencySymbol::new("¤", None),
+        }
+    }
+
     /// Create a currency instance from a ISO 4217 character code
     /// 
     /// # Example
@@ -1500,7 +1710,7 @@ impl std::fmt::Display for Currency {
 
 #[cfg(test)]
 mod tests {
-    use crate::Currency;
+    use crate::{Currency};
 
     #[test]
     fn return_numeric_code() {
@@ -1544,5 +1754,11 @@ mod tests {
             Currency::CHF.used_by(),
             vec!["Liechtenstein", "Switzerland"]
         );
+    }
+
+    #[test]
+    fn symbol() {
+        assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
+        assert_eq!(format!("{}", Currency::XXX.symbol()), "¤");
     }
 }
