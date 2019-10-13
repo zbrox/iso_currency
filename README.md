@@ -21,4 +21,5 @@ assert_eq!(Currency::EUR.numeric(), 978);
 assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
 assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
 assert_eq!(Currency::CHF.used_by(), vec!["Liechtenstein", "Switzerland"]);
+assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 ```
