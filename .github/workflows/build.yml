@@ -4,7 +4,7 @@ name: Build
 
 jobs:
   build_and_test:
-    name: Build cloudflare-ddns
+    name: Build and test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout latest
