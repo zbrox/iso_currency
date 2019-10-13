@@ -2,6 +2,7 @@
 
 [![](https://docs.rs/iso_currency/badge.svg)](https://docs.rs/iso_currency)
 ![](https://github.com/zbrox/iso_currency/workflows/Build/badge.svg)
+![](https://img.shields.io/crates/v/iso_currency.svg)
 
 This crate provides an enum that represents all ISO 4217 currencies and 
 has simple methods to convert between numeric and character code, list of 
