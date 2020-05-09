@@ -21,6 +21,8 @@
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! ```
 
+#![allow(clippy::zero_prefixed_literal)]
+
 #[derive(PartialEq)]
 pub enum Currency {
     AED,
