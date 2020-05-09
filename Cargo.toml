@@ -9,6 +9,7 @@ repository = "https://github.com/zbrox/iso_currency"
 documentation = "https://docs.rs/iso_currency/0.2.1/"
 homepage = "https://github.com/zbrox/iso_currency"
 readme = "README.md"
+keywords = ["currency", "iso", "iso-4217", "iso4217"]
 
 [features]
 default = []
