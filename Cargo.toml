@@ -16,3 +16,6 @@ with-serde = ["serde"]
 
 [dependencies]
 serde = { version = "1.0.107", optional = true, features = ["derive"] }
+
+[dev-dependencies]
+serde_json = "1.0.52"

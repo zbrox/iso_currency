@@ -1718,6 +1718,11 @@ impl std::fmt::Display for Currency {
 mod tests {
     use crate::Currency;
 
+    #[cfg(feature = "with-serde")]
+    use serde_json;
+    #[cfg(feature = "with-serde")]
+    use std::collections::HashMap;
+
     #[test]
     fn return_numeric_code() {
         assert_eq!(Currency::EUR.numeric(), 978);
@@ -1767,5 +1772,21 @@ mod tests {
     fn symbol() {
         assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
         assert_eq!(format!("{}", Currency::XXX.symbol()), "¤");
+    }
+
+    #[test]
+    #[cfg(feature = "with-serde")]
+    fn deserialize() {
+        let hashmap: HashMap<&str, Currency> = serde_json::from_str("{\"foo\": \"EUR\"}").unwrap();
+        assert_eq!(hashmap["foo"], Currency::EUR);
+    }
+
+    #[test]
+    #[cfg(feature = "with-serde")]
+    fn serialize() {
+        let mut hashmap: HashMap<&str, Currency> = HashMap::new();
+        hashmap.insert("foo", Currency::EUR);
+
+        assert_eq!(serde_json::to_string(&hashmap).unwrap(), "{\"foo\":\"EUR\"}");
     }
 }
