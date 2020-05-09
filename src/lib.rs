@@ -1,18 +1,18 @@
 //! ISO 4217 currency codes
-//! 
-//! This crate provides an enum that represents all ISO 4217 currencies and 
-//! has simple methods to convert between numeric and character code, list of 
+//!
+//! This crate provides an enum that represents all ISO 4217 currencies and
+//! has simple methods to convert between numeric and character code, list of
 //! territories where each currency is used, the symbol,
 //! and the English name of the currency.
-//! 
-//! The data for this is taken from 
+//!
+//! The data for this is taken from
 //! [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217)
-//! 
+//!
 //! # Examples
-//! 
+//!
 //! ```
 //! use iso_currency::Currency;
-//! 
+//!
 //! assert_eq!(Currency::EUR.name(), "Euro");
 //! assert_eq!(Currency::EUR.numeric(), 978);
 //! assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
@@ -21,9 +21,11 @@
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! ```
 
-#![allow(clippy::zero_prefixed_literal)]
+#[cfg(feature = "with-serde")]
+use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq)]
+#[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Currency {
     AED,
     AFN,
@@ -226,39 +228,40 @@ impl std::fmt::Display for CurrencySymbol {
 
 impl CurrencySymbol {
     /// Represents the commonly used symbol for a currency
-    /// 
+    ///
     /// Data for the symbols was collected from
     /// [https://en.wikipedia.org/wiki/Currency_symbol#List_of_presently-circulating_currency_symbols]()
-    /// 
+    ///
     /// TODO: Add data about centesimal symbols for every currency
     /// TODO: Add data about English representations of some currency symbols
     /// TODO: Maybe add data about alternative variants of the symbols
     /// TODO: Add data about position of symbol (according to locale) when formatting a sum of money
-    /// 
+    ///
     pub fn new(symbol: &str, centesimal: Option<&str>) -> CurrencySymbol {
         CurrencySymbol {
             symbol: symbol.to_owned(),
             centesimal: match centesimal {
                 Some(v) => Some(v.to_owned()),
                 None => None,
-            }
+            },
         }
     }
 }
 
 impl Currency {
     /// Returns the numeric code of the currency
-    /// 
+    ///
     /// This method will return the ISO 4217 numeric code of the currency
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use iso_currency::Currency;
-    /// 
+    ///
     /// assert_eq!(Currency::EUR.numeric(), 978);
     /// ```
-    pub fn numeric(&self) -> u16 {
+    pub fn numeric(self) -> u16 {
+        #[allow(clippy::zero_prefixed_literal)]
         match self {
             Currency::AED => 784,
             Currency::AFN => 971,
@@ -443,14 +446,14 @@ impl Currency {
     }
 
     /// Returns the name of the currency in English
-    /// 
+    ///
     /// This method will return the English name of the currency
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use iso_currency::Currency;
-    /// 
+    ///
     /// assert_eq!(Currency::EUR.name(), "Euro");
     /// ```
     pub fn name(&self) -> &str {
@@ -638,12 +641,12 @@ impl Currency {
     }
 
     /// Returns the ISO 4217 code
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use iso_currency::Currency;
-    /// 
+    ///
     /// assert_eq!(Currency::EUR.code(), "EUR");
     /// ```
     pub fn code(&self) -> &str {
@@ -831,22 +834,22 @@ impl Currency {
     }
 
     /// Returns a list of locations which use the currency
-    /// 
+    ///
     /// This method will return a list of locations which use the currency.
     /// The use is non-exclusive, so it might mean that the location is using
     /// other currencies as well. The list of locations is sorted.
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use iso_currency::Currency;
-    /// 
+    ///
     /// assert_eq!(
     ///     Currency::CHF.used_by(),
     ///     vec!["Liechtenstein", "Switzerland"]
     /// );
     /// ```
-    pub fn used_by(&self) -> Vec<&str> {
+    pub fn used_by(self) -> Vec<&'static str> {
         let mut territories = match self {
             Currency::AED => vec!["United Arab Emirates"],
             Currency::AFN => vec!["Afghanistan"],
@@ -1138,20 +1141,20 @@ impl Currency {
     }
 
     /// Returns the currency's symbol
-    /// 
-    /// This method will return the symbol commonly used to represent the 
+    ///
+    /// This method will return the symbol commonly used to represent the
     /// currency. In case there is no symbol associated the international
     /// currency symbol will be returned.
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use iso_currency::Currency;
-    /// 
+    ///
     /// assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
     /// assert_eq!(format!("{}", Currency::XXX.symbol()), "¤");
     /// ```
-    pub fn symbol(&self) -> CurrencySymbol {
+    pub fn symbol(self) -> CurrencySymbol {
         match self {
             Currency::AED => CurrencySymbol::new("د.إ", None),
             Currency::AFN => CurrencySymbol::new("؋", None),
@@ -1306,12 +1309,12 @@ impl Currency {
     }
 
     /// Create a currency instance from a ISO 4217 character code
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use iso_currency::Currency;
-    /// 
+    ///
     /// assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
     /// ```
     pub fn from_code(code: &str) -> Option<Currency> {
@@ -1504,15 +1507,16 @@ impl Currency {
     }
 
     /// Create a currency instance from a ISO 4217 numeric code
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use iso_currency::Currency;
-    /// 
+    ///
     /// assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
     /// ```
     pub fn from_numeric(numeric_code: u16) -> Option<Currency> {
+        #[allow(clippy::zero_prefixed_literal)]
         match numeric_code {
             784 => Some(Currency::AED),
             971 => Some(Currency::AFN),
@@ -1712,7 +1716,7 @@ impl std::fmt::Display for Currency {
 
 #[cfg(test)]
 mod tests {
-    use crate::{Currency};
+    use crate::Currency;
 
     #[test]
     fn return_numeric_code() {
