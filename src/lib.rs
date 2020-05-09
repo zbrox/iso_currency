@@ -21,9 +21,11 @@
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! ```
 
-#![allow(clippy::zero_prefixed_literal)]
+#[cfg(feature="serde")]
+use serde::{Serialize, Deserialize};
 
-#[derive(PartialEq)]
+#[cfg_attr(feature="serde", derive(Serialize, Deserialize))]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Currency {
     AED,
     AFN,

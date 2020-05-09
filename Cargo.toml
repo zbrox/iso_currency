@@ -11,3 +11,4 @@ homepage = "https://github.com/zbrox/iso_currency"
 readme = "README.md"
 
 [dependencies]
+serde = { version = "1.0.107", optional = true, features = ["derive"] }
