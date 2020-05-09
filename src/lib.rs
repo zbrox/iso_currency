@@ -1746,6 +1746,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::zero_prefixed_literal)]
     fn from_numeric() {
         assert_eq!(Currency::from_numeric(999), Some(Currency::XXX));
         assert_eq!(Currency::from_numeric(052), Some(Currency::BBD));
