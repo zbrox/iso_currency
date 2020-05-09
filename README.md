@@ -11,7 +11,15 @@ territories where each currency is used, the symbol, and the English name of the
 The data for this is taken from 
 [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217)
 
-# Examples
+## Features
+
+The crate has only one optional feature - `with-serde`. If you need serialization/deserialization support using `serde` you should include the feature in your dependency on `iso_currency`, for example like this:
+
+```toml
+iso_currency = { version = "0.2.1", features = ["with-serde"] }
+```
+
+## Examples
 
 ```rust
 use iso_currency::Currency;
