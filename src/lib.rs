@@ -21,10 +21,10 @@
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! ```
 
-#[cfg(feature = "serde")]
+#[cfg(feature = "with-serde")]
 use serde::{Deserialize, Serialize};
 
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Currency {
     AED,
