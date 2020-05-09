@@ -260,7 +260,8 @@ impl Currency {
     /// 
     /// assert_eq!(Currency::EUR.numeric(), 978);
     /// ```
-    pub fn numeric(&self) -> u16 {
+    pub fn numeric(self) -> u16 {
+        #[allow(clippy::zero_prefixed_literal)]
         match self {
             Currency::AED => 784,
             Currency::AFN => 971,
@@ -848,7 +849,7 @@ impl Currency {
     ///     vec!["Liechtenstein", "Switzerland"]
     /// );
     /// ```
-    pub fn used_by(&self) -> Vec<&str> {
+    pub fn used_by(self) -> Vec<&'static str> {
         let mut territories = match self {
             Currency::AED => vec!["United Arab Emirates"],
             Currency::AFN => vec!["Afghanistan"],
@@ -1153,7 +1154,7 @@ impl Currency {
     /// assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
     /// assert_eq!(format!("{}", Currency::XXX.symbol()), "¤");
     /// ```
-    pub fn symbol(&self) -> CurrencySymbol {
+    pub fn symbol(self) -> CurrencySymbol {
         match self {
             Currency::AED => CurrencySymbol::new("د.إ", None),
             Currency::AFN => CurrencySymbol::new("؋", None),
@@ -1515,6 +1516,7 @@ impl Currency {
     /// assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
     /// ```
     pub fn from_numeric(numeric_code: u16) -> Option<Currency> {
+        #[allow(clippy::zero_prefixed_literal)]
         match numeric_code {
             784 => Some(Currency::AED),
             971 => Some(Currency::AFN),
