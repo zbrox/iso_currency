@@ -18,7 +18,7 @@ The `Country` enum is re-exported from the only dependency - the [iso_country](h
 The crate has only one optional feature - `with-serde`. If you need serialization/deserialization support using `serde` you should include the feature in your dependency on `iso_currency`, for example like this:
 
 ```toml
-iso_currency = { version = "0.3.0", features = ["with-serde"] }
+iso_currency = { version = "0.3.1", features = ["with-serde"] }
 ```
 
 ## Examples
