@@ -8,22 +8,24 @@
 //! The data for this is taken from 
 //! [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217)
 //! 
+//! The `Country` enum is reexported from the only dependency - the `iso_country` crate.
+//! 
 //! # Examples
 //! 
 //! ```
-//! use iso_currency::Currency;
+//! use iso_currency::{Currency, Country};
 //! 
 //! assert_eq!(Currency::EUR.name(), "Euro");
 //! assert_eq!(Currency::EUR.numeric(), 978);
 //! assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
 //! assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
-//! assert_eq!(Currency::CHF.used_by(), vec!["Liechtenstein", "Switzerland"]);
+//! assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! ```
 
 #![allow(clippy::zero_prefixed_literal)]
 
-use iso_country::Country;
+pub use iso_country::Country;
 
 #[derive(PartialEq)]
 pub enum Currency {
@@ -841,11 +843,11 @@ impl Currency {
     /// # Example
     /// 
     /// ```
-    /// use iso_currency::Currency;
+    /// use iso_currency::{Currency, Country};
     /// 
     /// assert_eq!(
     ///     Currency::CHF.used_by(),
-    ///     vec!["Liechtenstein", "Switzerland"]
+    ///     vec![Country::LI, Country::CH]
     /// );
     /// ```
     pub fn used_by(&self) -> Vec<Country> {
@@ -1042,7 +1044,7 @@ impl Currency {
             Currency::STN => vec![Country::ST],
             Currency::SVC => vec![Country::SV],
             Currency::SYP => vec![Country::SY],
-            Currency::SZL => vec![Country::Eswatini[13]],
+            Currency::SZL => vec![Country::SZ],
             Currency::THB => vec![Country::TH],
             Currency::TJS => vec![Country::TJ],
             Currency::TMT => vec![Country::TM],
@@ -1061,7 +1063,7 @@ impl Currency {
                 Country::BM,
                 Country::IO,
                 Country::VG,
-                Country::Caribbean Netherlands,
+                Country::BQ,
                 Country::EC,
                 Country::SV,
                 Country::GU,
@@ -1111,7 +1113,7 @@ impl Currency {
                 Country::LC,
                 Country::VC,
             ],
-            Currency::XDR => vec![Country::International Monetary Fund],
+            Currency::XDR => vec![],
             Currency::XOF => vec![
                 Country::BJ,
                 Country::BF,
@@ -1125,9 +1127,9 @@ impl Currency {
             Currency::XPD => vec![],
             Currency::XPF => vec![Country::PF, Country::NC, Country::WF],
             Currency::XPT => vec![],
-            Currency::XSU => vec![Country::Unified System for Regional Compensation (SUCRE)],
+            Currency::XSU => vec![],
             Currency::XTS => vec![],
-            Currency::XUA => vec![Country::African Development Bank],
+            Currency::XUA => vec![],
             Currency::XXX => vec![],
             Currency::YER => vec![Country::YE],
             Currency::ZAR => vec![Country::LS, Country::NA, Country::ZA],
@@ -1714,7 +1716,7 @@ impl std::fmt::Display for Currency {
 
 #[cfg(test)]
 mod tests {
-    use crate::{Currency};
+    use crate::{Currency, Country};
 
     #[test]
     fn return_numeric_code() {
@@ -1753,10 +1755,10 @@ mod tests {
 
     #[test]
     fn used_by() {
-        assert_eq!(Currency::BGN.used_by(), vec!["Bulgaria"]);
+        assert_eq!(Currency::BGN.used_by(), vec![Country::BG]);
         assert_eq!(
             Currency::CHF.used_by(),
-            vec!["Liechtenstein", "Switzerland"]
+            vec![Country::LI, Country::CH]
         );
     }
 
