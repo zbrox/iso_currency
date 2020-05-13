@@ -16,6 +16,7 @@ default = []
 with-serde = ["serde"]
 
 [dependencies]
+iso_country = "0.1.4"
 serde = { version = "1.0.107", optional = true, features = ["derive"] }
 
 [dev-dependencies]
