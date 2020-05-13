@@ -8,7 +8,7 @@
 //! The data for this is taken from
 //! [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217)
 //! 
-//! The `Country` enum is reexported from the only dependency - the `iso_country` crate.
+//! The `Country` enum is re-exported from the only dependency - the [iso_country](https://crates.io/crates/iso_country) crate.
 //! 
 //! # Examples
 //!
