@@ -1776,6 +1776,8 @@ mod tests {
     fn symbol() {
         assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
         assert_eq!(format!("{}", Currency::XXX.symbol()), "¤");
+        assert_eq!(format!("{}", Currency::GEL.symbol()), "ლ");
+        assert_eq!(format!("{}", Currency::AED.symbol()), "د.إ");
     }
 
     #[test]
