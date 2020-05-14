@@ -11,7 +11,7 @@ struct IsoData {
     numeric: u16,
     name: String,
     symbol: String,
-    centesimal: Option<String>,
+    subunit_symbol: Option<String>,
     used_by: Option<Vec<String>>
 }
 
@@ -34,7 +34,7 @@ fn read_table() -> Vec<IsoData> {
                     false => Some(columns[3].split(';').map(|v| v.to_owned()).collect::<Vec<String>>()),
                 },
                 symbol: columns[4].into(),
-                centesimal: match columns[5].is_empty() {
+                subunit_symbol: match columns[5].is_empty() {
                     true => None,
                     false => Some(columns[5].into())
                 },
@@ -164,11 +164,11 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     writeln!(file, "    pub fn symbol(self) -> CurrencySymbol {{").unwrap();
     writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
-        let centesimal = match &currency.centesimal {
+        let subunit_symbol = match &currency.subunit_symbol {
             Some(v) => format!("Some(\"{}\")", &v),
             None => "None".into(),
         };
-        writeln!(file, "            Currency::{} => CurrencySymbol::new(\"{}\", {}),", &currency.alpha3, &currency.symbol, centesimal).unwrap();
+        writeln!(file, "            Currency::{} => CurrencySymbol::new(\"{}\", {}),", &currency.alpha3, &currency.symbol, subunit_symbol).unwrap();
     }
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
