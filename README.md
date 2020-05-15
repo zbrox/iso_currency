@@ -18,7 +18,7 @@ The `Country` enum is re-exported from the only dependency - the [iso_country](h
 The crate has only one optional feature - `with-serde`. If you need serialization/deserialization support using `serde` you should include the feature in your dependency on `iso_currency`, for example like this:
 
 ```toml
-iso_currency = { version = "0.3.2", features = ["with-serde"] }
+iso_currency = { version = "0.4.0", features = ["with-serde"] }
 ```
 
 ## Examples
@@ -32,6 +32,7 @@ assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
 assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
 assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
 assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
+assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
 ```
 
 ## Want to help improve the data?
