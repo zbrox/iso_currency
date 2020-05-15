@@ -32,6 +32,7 @@ assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
 assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
 assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
 assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
+assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
 ```
 
 ## Want to help improve the data?
