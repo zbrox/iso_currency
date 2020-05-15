@@ -21,6 +21,7 @@
 //! assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
 //! assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
+//! assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
 //! ```
 
 pub use iso_country::Country;
@@ -33,7 +34,7 @@ include!(concat!(env!("OUT_DIR"), "/isodata.rs"));
 #[derive(PartialEq)]
 pub struct CurrencySymbol {
     pub symbol: String,
-    pub centesimal: Option<String>,
+    pub subunit_symbol: Option<String>,
 }
 
 impl std::fmt::Debug for CurrencySymbol {
@@ -54,15 +55,15 @@ impl CurrencySymbol {
     /// Data for the symbols was collected from
     /// [https://en.wikipedia.org/wiki/Currency_symbol#List_of_presently-circulating_currency_symbols]()
     ///
-    /// TODO: Add data about centesimal symbols for every currency
+    /// TODO: Add data about subunit symbols for every currency
     /// TODO: Add data about English representations of some currency symbols
     /// TODO: Maybe add data about alternative variants of the symbols
     /// TODO: Add data about position of symbol (according to locale) when formatting a sum of money
     ///
-    pub fn new(symbol: &str, centesimal: Option<&str>) -> CurrencySymbol {
+    pub fn new(symbol: &str, subunit_symbol: Option<&str>) -> CurrencySymbol {
         CurrencySymbol {
             symbol: symbol.to_owned(),
-            centesimal: match centesimal {
+            subunit_symbol: match subunit_symbol {
                 Some(v) => Some(v.to_owned()),
                 None => None,
             },
@@ -124,6 +125,7 @@ mod tests {
         assert_eq!(Currency::from_numeric(999), Some(Currency::XXX));
         assert_eq!(Currency::from_numeric(052), Some(Currency::BBD));
         assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
+        assert_eq!(Currency::from_numeric(012), Some(Currency::DZD));
         assert_eq!(Currency::from_numeric(123), None);
     }
 
@@ -142,6 +144,14 @@ mod tests {
         assert_eq!(format!("{}", Currency::XXX.symbol()), "¤");
         assert_eq!(format!("{}", Currency::GEL.symbol()), "ლ");
         assert_eq!(format!("{}", Currency::AED.symbol()), "د.إ");
+    }
+
+    #[test]
+    fn subunit_fraction() {
+        assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
+        assert_eq!(Currency::DZD.subunit_fraction(), Some(100));
+        assert_eq!(Currency::MRU.subunit_fraction(), Some(5));
+        assert_eq!(Currency::XAU.subunit_fraction(), None);
     }
 
     #[test]

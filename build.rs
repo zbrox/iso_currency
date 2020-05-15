@@ -11,8 +11,9 @@ struct IsoData {
     numeric: u16,
     name: String,
     symbol: String,
-    centesimal: Option<String>,
-    used_by: Option<Vec<String>>
+    used_by: Option<Vec<String>>,
+    subunit_symbol: Option<String>,
+    subunit_fraction: Option<u16>,
 }
 
 fn read_table() -> Vec<IsoData> {
@@ -27,17 +28,21 @@ fn read_table() -> Vec<IsoData> {
 
             IsoData {
                 alpha3: columns[0].into(),
-                numeric: columns[1].parse::<u16>().expect("Could not parse numeric code to u16"),
+                numeric: columns[1].parse::<u16>().expect(format!("Could not parse numeric code to u16 for {}", &columns[0]).as_str()),
                 name: columns[2].into(),
                 used_by: match columns[3].is_empty() {
                     true => None,
                     false => Some(columns[3].split(';').map(|v| v.to_owned()).collect::<Vec<String>>()),
                 },
                 symbol: columns[4].into(),
-                centesimal: match columns[5].is_empty() {
+                subunit_symbol: match columns[5].is_empty() {
                     true => None,
                     false => Some(columns[5].into())
                 },
+                subunit_fraction: match columns[6].is_empty() {
+                    true => None,
+                    false => Some(columns[6].parse::<u16>().expect(format!("Could not parse subunit fraction to u16 for {:?}", &columns[0]).as_str()))
+                }
             }
         })
         .collect()
@@ -164,11 +169,11 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     writeln!(file, "    pub fn symbol(self) -> CurrencySymbol {{").unwrap();
     writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
-        let centesimal = match &currency.centesimal {
+        let subunit_symbol = match &currency.subunit_symbol {
             Some(v) => format!("Some(\"{}\")", &v),
             None => "None".into(),
         };
-        writeln!(file, "            Currency::{} => CurrencySymbol::new(\"{}\", {}),", &currency.alpha3, &currency.symbol, centesimal).unwrap();
+        writeln!(file, "            Currency::{} => CurrencySymbol::new(\"{}\", {}),", &currency.alpha3, &currency.symbol, subunit_symbol).unwrap();
     }
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
@@ -213,6 +218,32 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     writeln!(file, "            _ => None,").unwrap();
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
+
+    writeln!(file, "    /// Returns how many of the subunits equal the main unit of the currency").unwrap();
+    writeln!(file, "    /// For example there are a 100 cents in 1 Euro so this will return Some(100) for EUR.").unwrap();
+    writeln!(file, "    ///").unwrap();
+    writeln!(file, "    /// This returns an optional value because some currencies don't have a subunit.").unwrap();
+    writeln!(file, "    ///").unwrap();
+    writeln!(file, "    /// # Example").unwrap();
+    writeln!(file, "    ///").unwrap();
+    writeln!(file, "    /// ```").unwrap();
+    writeln!(file, "    /// use iso_currency::Currency;").unwrap();
+    writeln!(file, "    ///").unwrap();
+    writeln!(file, "    /// assert_eq!(Currency::EUR.subunit_fraction(), Some(100));").unwrap();
+    writeln!(file, "    /// ```").unwrap();
+    writeln!(file, "    pub fn subunit_fraction(self) -> Option<u16> {{").unwrap();
+    writeln!(file, "        match self {{").unwrap();
+    for currency in data.iter() {
+        let value = match &currency.subunit_fraction {
+            Some(v) => format!("Some({})", v),
+            None => "None".into(),
+        };
+        writeln!(file, "            Currency::{} => {},", &currency.alpha3, &value).unwrap();
+    }
+    writeln!(file, "        }}").unwrap();
+    writeln!(file, "    }}").unwrap();
+    writeln!(file, "").unwrap();
+
     writeln!(file, "}}").unwrap();
     writeln!(file, "").unwrap();
 }
