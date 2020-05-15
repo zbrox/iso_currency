@@ -21,6 +21,7 @@
 //! assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
 //! assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
+//! assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
 //! ```
 
 pub use iso_country::Country;
@@ -124,6 +125,7 @@ mod tests {
         assert_eq!(Currency::from_numeric(999), Some(Currency::XXX));
         assert_eq!(Currency::from_numeric(052), Some(Currency::BBD));
         assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
+        assert_eq!(Currency::from_numeric(012), Some(Currency::DZD));
         assert_eq!(Currency::from_numeric(123), None);
     }
 
@@ -142,6 +144,14 @@ mod tests {
         assert_eq!(format!("{}", Currency::XXX.symbol()), "¤");
         assert_eq!(format!("{}", Currency::GEL.symbol()), "ლ");
         assert_eq!(format!("{}", Currency::AED.symbol()), "د.إ");
+    }
+
+    #[test]
+    fn subunit_fraction() {
+        assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
+        assert_eq!(Currency::DZD.subunit_fraction(), Some(100));
+        assert_eq!(Currency::MRU.subunit_fraction(), Some(5));
+        assert_eq!(Currency::XAU.subunit_fraction(), None);
     }
 
     #[test]
