@@ -1,14 +1,14 @@
 # ISO 4217 currency codes
 
-[![](https://docs.rs/iso_currency/badge.svg)](https://docs.rs/iso_currency)
-![](https://github.com/zbrox/iso_currency/workflows/Build/badge.svg)
-![](https://img.shields.io/crates/v/iso_currency.svg)
+[![docs badge](https://docs.rs/iso_currency/badge.svg)](https://docs.rs/iso_currency)
+![build badge](https://github.com/zbrox/iso_currency/workflows/Build/badge.svg)
+![crates badge](https://img.shields.io/crates/v/iso_currency.svg)
 
-This crate provides an enum that represents all ISO 4217 currencies and 
-has simple methods to convert between numeric and character code, list of 
+This crate provides an enum that represents all ISO 4217 currencies and
+has simple methods to convert between numeric and character code, list of
 territories where each currency is used, the symbol, and the English name of the currency.
 
-The data for this is taken from 
+The data for this is taken from
 [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217)
 
 The `Country` enum is re-exported from the only dependency - the [iso_country](https://crates.io/crates/iso_country) crate.
