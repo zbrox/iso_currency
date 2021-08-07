@@ -7,14 +7,14 @@
 //!
 //! The data for this is taken from
 //! [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217)
-//! 
+//!
 //! The `Country` enum is re-exported from the only dependency - the [iso_country](https://crates.io/crates/iso_country) crate.
-//! 
+//!
 //! # Examples
 //!
 //! ```
 //! use iso_currency::{Currency, Country};
-//! 
+//!
 //! assert_eq!(Currency::EUR.name(), "Euro");
 //! assert_eq!(Currency::EUR.numeric(), 978);
 //! assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
@@ -35,6 +35,15 @@ include!(concat!(env!("OUT_DIR"), "/isodata.rs"));
 pub struct CurrencySymbol {
     pub symbol: String,
     pub subunit_symbol: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct ParseCurrencyError;
+
+impl std::fmt::Display for ParseCurrencyError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "not a valid ISO 4217 currency code")
+    }
 }
 
 impl std::fmt::Debug for CurrencySymbol {
@@ -83,9 +92,20 @@ impl std::fmt::Display for Currency {
     }
 }
 
+impl std::str::FromStr for Currency {
+    type Err = ParseCurrencyError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match Self::from_code(s) {
+            Some(c) => Ok(c),
+            None => Err(ParseCurrencyError)
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::{Currency, Country};
+    use crate::{Country, Currency, ParseCurrencyError};
 
     #[cfg(feature = "with-serde")]
     use serde_json;
@@ -175,5 +195,14 @@ mod tests {
         let mut v = vec![Currency::SEK, Currency::DKK, Currency::EUR];
         v.sort();
         assert_eq!(v, vec![Currency::DKK, Currency::EUR, Currency::SEK]);
+    }
+    
+    #[test]
+    fn implements_from_str() {
+        use std::str::FromStr;
+        assert_eq!(Currency::from_str("EUR"), Ok(Currency::EUR));
+        assert_eq!(Currency::from_str("SEK"), Ok(Currency::SEK));
+        assert_eq!(Currency::from_str("BGN"), Ok(Currency::BGN));
+        assert_eq!(Currency::from_str("AAA"), Err(ParseCurrencyError));
     }
 }
