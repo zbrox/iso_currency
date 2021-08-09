@@ -4,7 +4,7 @@ use std::io::{BufRead, BufReader, BufWriter, Write};
 use std::path::Path;
 
 // use Tab separated so we can easily split on a rarely used character
-static TSV_TABLE_PATH: &'static str = "isodata.tsv";
+static TSV_TABLE_PATH: &str = "isodata.tsv";
 
 struct IsoData {
     alpha3: String,
@@ -24,11 +24,11 @@ fn read_table() -> Vec<IsoData> {
         .map(|line| {
             let line = line.expect("Problems reading line from ISO data CSV file");
 
-            let columns: Vec<&str> = line.split("\t").collect();
+            let columns: Vec<&str> = line.split('\t').collect();
 
             IsoData {
                 alpha3: columns[0].into(),
-                numeric: columns[1].parse::<u16>().expect(format!("Could not parse numeric code to u16 for {}", &columns[0]).as_str()),
+                numeric: columns[1].parse::<u16>().unwrap_or_else(|_| panic!("Could not parse numeric code to u16 for {}", &columns[0])),
                 name: columns[2].into(),
                 used_by: match columns[3].is_empty() {
                     true => None,
@@ -41,14 +41,14 @@ fn read_table() -> Vec<IsoData> {
                 },
                 subunit_fraction: match columns[6].is_empty() {
                     true => None,
-                    false => Some(columns[6].parse::<u16>().expect(format!("Could not parse subunit fraction to u16 for {:?}", &columns[0]).as_str()))
+                    false => Some(columns[6].parse::<u16>().unwrap_or_else(|_| panic!("Could not parse subunit fraction to u16 for {:?}", &columns[0])))
                 }
             }
         })
         .collect()
 }
 
-fn write_enum(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
+fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
     writeln!(file, "#[cfg_attr(feature = \"with-serde\", derive(Serialize, Deserialize))]").unwrap();
     writeln!(file, "#[derive(Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]").unwrap();
     writeln!(file, "pub enum Currency {{").unwrap();
@@ -58,10 +58,10 @@ fn write_enum(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     }
 
     writeln!(file, "}}").unwrap();
-    writeln!(file, "").unwrap();
+    writeln!(file).unwrap();
 }
 
-fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
+fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
     writeln!(file, "impl Currency {{").unwrap();
     writeln!(file, "    /// Returns the numeric code of the currency").unwrap();
     writeln!(file, "    ///").unwrap();
@@ -81,7 +81,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     }
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "").unwrap();
+    writeln!(file).unwrap();
     
     writeln!(file, "    /// Returns the name of the currency in English").unwrap();
     writeln!(file, "    ///").unwrap();
@@ -101,7 +101,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     }
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "").unwrap();
+    writeln!(file).unwrap();
 
     writeln!(file, "    /// Returns the ISO 4217 code").unwrap();
     writeln!(file, "    ///").unwrap();
@@ -119,7 +119,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     }
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "").unwrap();
+    writeln!(file).unwrap();
 
     writeln!(file, "    /// Returns a list of locations which use the currency").unwrap();
     writeln!(file, "    ///").unwrap();
@@ -150,7 +150,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     writeln!(file, "        territories.sort();").unwrap();
     writeln!(file, "        territories").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "").unwrap();
+    writeln!(file).unwrap();
 
     writeln!(file, "    /// Returns the currency's symbol").unwrap();
     writeln!(file, "    ///").unwrap();
@@ -177,7 +177,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     }
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "").unwrap();
+    writeln!(file).unwrap();
 
     writeln!(file, "    /// Create a currency instance from a ISO 4217 character code").unwrap();
     writeln!(file, "    ///").unwrap();
@@ -199,7 +199,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     writeln!(file, "            _ => None,").unwrap();
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "").unwrap();
+    writeln!(file).unwrap();
 
     writeln!(file, "    /// Create a currency instance from a ISO 4217 numeric code").unwrap();
     writeln!(file, "    ///").unwrap();
@@ -242,10 +242,10 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &Vec<IsoData>) {
     }
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "").unwrap();
+    writeln!(file).unwrap();
 
     writeln!(file, "}}").unwrap();
-    writeln!(file, "").unwrap();
+    writeln!(file).unwrap();
 }
 
 fn main() {

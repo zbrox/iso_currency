@@ -72,10 +72,7 @@ impl CurrencySymbol {
     pub fn new(symbol: &str, subunit_symbol: Option<&str>) -> CurrencySymbol {
         CurrencySymbol {
             symbol: symbol.to_owned(),
-            subunit_symbol: match subunit_symbol {
-                Some(v) => Some(v.to_owned()),
-                None => None,
-            },
+            subunit_symbol: subunit_symbol.map(|v| v.to_owned()),
         }
     }
 }
