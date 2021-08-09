@@ -191,6 +191,13 @@ mod tests {
     }
 
     #[test]
+    fn can_be_sorted() {
+        let mut v = vec![Currency::SEK, Currency::DKK, Currency::EUR];
+        v.sort();
+        assert_eq!(v, vec![Currency::DKK, Currency::EUR, Currency::SEK]);
+    }
+    
+    #[test]
     fn implements_from_str() {
         use std::str::FromStr;
         assert_eq!(Currency::from_str("EUR"), Ok(Currency::EUR));
