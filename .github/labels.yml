@@ -5,9 +5,6 @@
 - color: 0075ca
   description: Improvements or additions to documentation
   name: documentation
-- color: cfd3d7
-  description: This issue or pull request already exists
-  name: duplicate
 - color: a2eeef
   description: New feature or request
   name: enhancement
@@ -23,9 +20,6 @@
 - color: d876e3
   description: Further information is requested
   name: question
-- color: ffffff
-  description: This will not be worked on
-  name: wontfix
 - name: dependabot
   color: 841abd
 - name: merge
