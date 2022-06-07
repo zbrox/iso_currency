@@ -1,0 +1,5 @@
+---
+requiredLabels:
+  - merge
+
+reportStatus: true
