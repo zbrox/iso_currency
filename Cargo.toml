@@ -14,10 +14,13 @@ keywords = ["currency", "iso", "iso-4217", "iso4217"]
 [features]
 default = []
 with-serde = ["serde"]
+with-schemars = ["schemars"]
 
 [dependencies]
 iso_country = "0.1.4"
 serde = { version = "1.0.127", optional = true, features = ["derive"] }
+schemars = { version = "0.8.3", optional = true }
+
 
 [dev-dependencies]
 serde_json = "1.0.66"

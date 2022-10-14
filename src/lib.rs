@@ -29,6 +29,9 @@ pub use iso_country::Country;
 #[cfg(feature = "with-serde")]
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "with-schemars")]
+use schemars::JsonSchema;
+
 include!(concat!(env!("OUT_DIR"), "/isodata.rs"));
 
 #[derive(PartialEq)]
