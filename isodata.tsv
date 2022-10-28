@@ -1,180 +1,182 @@
-alpha3	numeric	name	used_by_alpha2	symbol	subunit_symbol	subunit_fraction
-AED	784	United Arab Emirates dirham	AE	د.إ		100
-AFN	971	Afghan afghani	AF	؋		100
-ALL	008	Albanian lek	AL	L	q	100
-AMD	051	Armenian dram	AM	֏		100
-ANG	532	Netherlands Antillean guilder	CW;SX	ƒ		100
-AOA	973	Angolan kwanza	AO	Kz		100
-ARS	032	Argentine peso	AR	$		100
-AUD	036	Australian dollar	AU;CX;CC;HM;KI;NR;NF;TV	$	c	100
-AWG	533	Aruban florin	AW	ƒ		100
-AZN	944	Azerbaijani manat	AZ	₼		100
-BAM	977	Bosnia and Herzegovina convertible mark	BA	KM		100
-BBD	052	Barbados dollar	BB	Bds$		100
-BDT	050	Bangladeshi taka	BD	৳		100
-BGN	975	Bulgarian lev	BG	лв.		100
-BHD	048	Bahraini dinar	BH	.د.ب		1000
-BIF	108	Burundian franc	BI	FBu		100
-BMD	060	Bermudian dollar	BM	$		100
-BND	096	Brunei dollar	BN	B$		100
-BOB	068	Boliviano	BO	Bs.		100
-BOV	984	Bolivian Mvdol	BO	¤		
-BRL	986	Brazilian real	BR	R$		100
-BSD	044	Bahamian dollar	BS	$		100
-BTN	064	Bhutanese ngultrum	BT	Nu.	Ch.	100
-BWP	072	Botswana pula	BW	P		100
-BYN	933	Belarusian ruble	BY	Br		100
-BZD	084	Belize dollar	BZ	$		100
-CAD	124	Canadian dollar	CA	$	¢	100
-CDF	976	Congolese franc	CD	₣		100
-CHE	947	WIR Euro	CH	¤		100
-CHF	756	Swiss franc	CH;LI	₣		100
-CHW	948	WIR Franc	CH	¤		100
-CLF	990	Unidad de Fomento	CL	¤		100
-CLP	152	Chilean peso	CL	$		100
-CNY	156	Renminbi (Chinese) yuan	CN	¥		100
-COP	170	Colombian peso	CO	$		100
-COU	970	Unidad de Valor Real (UVR)	CO	¤		100
-CRC	188	Costa Rican colon	CR	₡		100
-CUC	931	Cuban convertible peso	CU	$		100
-CUP	192	Cuban peso	CU	₱		100
-CVE	132	Cape Verdean escudo	CV	Esc		100
-CZK	203	Czech koruna	CZ	Kč	h	100
-DJF	262	Djiboutian franc	DJ	₣		100
-DKK	208	Danish krone	DK;FO;GL	kr		100
-DOP	214	Dominican peso	DO	RD$		100
-DZD	012	Algerian dinar	DZ	دج		100
-EGP	818	Egyptian pound	EG	£	pt	100
-ERN	232	Eritrean nakfa	ER	Nfk		100
-ETB	230	Ethiopian birr	ET	Br		100
-EUR	978	Euro	AX;AD;AT;BE;CY;EE;FI;FR;TF;DE;GR;GP;IE;IT;LV;LT;LU;MT;GF;MQ;YT;MC;ME;NL;PT;RE;BL;MF;PM;SM;SK;SI;ES;VA	€		100
-FJD	242	Fiji dollar	FJ	FJ$		100
-FKP	238	Falkland Islands pound	FK	£		100
-GBP	826	Pound sterling	GB;IO;IM;JE;GG	£	p	100
-GEL	981	Georgian lari	GE	ლ		100
-GHS	936	Ghanaian cedi	GH	GH₵		100
-GIP	292	Gibraltar pound	GI	£		100
-GMD	270	Gambian dalasi	GM	D		100
-GNF	324	Guinean franc	GN	₣		100
-GTQ	320	Guatemalan quetzal	GT	Q		100
-GYD	328	Guyanese dollar	GY	G$		100
-HKD	344	Hong Kong dollar	HK	HK$		100
-HNL	340	Honduran lempira	HN	L		100
-HRK	191	Croatian kuna	HR	kn	lp	100
-HTG	332	Haitian gourde	HT	G		100
-HUF	348	Hungarian forint	HU	Ft		100
-IDR	360	Indonesian rupiah	ID	Rp		100
-ILS	376	Israeli new shekel	IL;PS	₪		100
-INR	356	Indian rupee	IN;BT	₹		100
-IQD	368	Iraqi dinar	IQ	د.ع		1000
-IRR	364	Iranian rial	IR	﷼		100
-ISK	352	Icelandic króna	IS	kr		100
-JMD	388	Jamaican dollar	JM	$		100
-JOD	400	Jordanian dinar	JO	JD		100
-JPY	392	Japanese yen	JP	¥		100
-KES	404	Kenyan shilling	KE	Ksh		100
-KGS	417	Kyrgyzstani som	KG	С̲		100
-KHR	116	Cambodian riel	KH	៛		100
-KMF	174	Comoro franc	KM	₣		100
-KPW	408	North Korean won	KP	₩		100
-KRW	410	South Korean won	KR	₩		100
-KWD	414	Kuwaiti dinar	KW	د.ك		1000
-KYD	136	Cayman Islands dollar	KY	$		100
-KZT	398	Kazakhstani tenge	KZ	₸		100
-LAK	418	Lao kip	LA	₭		100
-LBP	422	Lebanese pound	LB	LL		100
-LKR	144	Sri Lankan rupee	LK	₨		100
-LRD	430	Liberian dollar	LR	L$		100
-LSL	426	Lesotho loti	LS	M		100
-LYD	434	Libyan dinar	LY	ل.د		1000
-MAD	504	Moroccan dirham	MA;EH	د.م.		100
-MDL	498	Moldovan leu	MD	¤		100
-MGA	969	Malagasy ariary	MG	Ar		5
-MKD	807	Macedonian denar	MK	ден		100
-MMK	104	Myanmar kyat	MM	K		100
-MNT	496	Mongolian tögrög	MN	₮		100
-MOP	446	Macanese pataca	MO	MOP$		100
-MRU	929	Mauritanian ouguiya	MR	UM		5
-MUR	480	Mauritian rupee	MU	₨		100
-MVR	462	Maldivian rufiyaa	MV	Rf.		100
-MWK	454	Malawian kwacha	MW	K		100
-MXN	484	Mexican peso	MX	$	¢	100
-MXV	979	Mexican Unidad de Inversion (UDI)	MX	¤		100
-MYR	458	Malaysian ringgit	MY	RM		100
-MZN	943	Mozambican metical	MZ	MT		100
-NAD	516	Namibian dollar	NA	N$		100
-NGN	566	Nigerian naira	NG	₦		100
-NIO	558	Nicaraguan córdoba	NI	C$		100
-NOK	578	Norwegian krone	NO;SJ;BV	kr		100
-NPR	524	Nepalese rupee	NP	₨		100
-NZD	554	New Zealand dollar	NZ;CK;NU;PN;TK	$	c	100
-OMR	512	Omani rial	OM	ر.ع.		1000
-PAB	590	Panamanian balboa	PA	B/.		100
-PEN	604	Peruvian sol	PE	S/		100
-PGK	598	Papua New Guinean kina	PG	K		100
-PHP	608	Philippine peso	PH	₱		100
-PKR	586	Pakistani rupee	PK	₨		100
-PLN	985	Polish złoty	PL	zł	gr	100
-PYG	600	Paraguayan guaraní	PY	₲		100
-QAR	634	Qatari riyal	QA	ر.ق		100
-RON	946	Romanian leu	RO	L		100
-RSD	941	Serbian dinar	RS	дин		100
-RUB	643	Russian ruble	RU	₽		100
-RWF	646	Rwandan franc	RW	FRw		100
-SAR	682	Saudi riyal	SA	ر.س		100
-SBD	090	Solomon Islands dollar	SB	S$		100
-SCR	690	Seychelles rupee	SC	SRe		100
-SDG	938	Sudanese pound	SD	¤		100
-SEK	752	Swedish krona/kronor	SE	kr		100
-SGD	702	Singapore dollar	SG	S$		100
-SHP	654	Saint Helena pound	SH	£		100
-SLL	694	Sierra Leonean leone	SL	Le		100
-SOS	706	Somali shilling	SO	Sh.So.		100
-SRD	968	Surinamese dollar	SR	$		100
-SSP	728	South Sudanese pound	SS	¤		100
-STN	930	São Tomé and Príncipe dobra	ST	Db		100
-SVC	222	Salvadoran colón	SV	¤		100
-SYP	760	Syrian pound	SY	LS		100
-SZL	748	Swazi lilangeni	SZ	E		100
-THB	764	Thai baht	TH	฿		100
-TJS	972	Tajikistani somoni	TJ	¤		100
-TMT	934	Turkmenistan manat	TM	¤		100
-TND	788	Tunisian dinar	TN	د.ت		1000
-TOP	776	Tongan paʻanga	TO	T$		100
-TRY	949	Turkish lira	TR	₺		100
-TTD	780	Trinidad and Tobago dollar	TT	$		100
-TWD	901	New Taiwan dollar	TW	NT$		100
-TZS	834	Tanzanian shilling	TZ	Tsh		100
-UAH	980	Ukrainian hryvnia	UA	₴		100
-UGX	800	Ugandan shilling	UG	USh		100
-USD	840	United States dollar	US;AS;BB;BM;IO;VG;BQ;EC;SV;GU;HT;MH;FM;MP;PW;PA;PR;TL;TC;VI;UM;KH	$	¢	100
-USN	997	United States dollar (next day)	US	$	¢	100
-UYI	940	Uruguay Peso en Unidades Indexadas (URUIURUI)	UY	¤		100
-UYU	858	Uruguayan peso	UY	$U		100
-UYW	927	Unidad previsional	UY	¤		100
-UZS	860	Uzbekistan som	UZ	¤		100
-VES	928	Venezuelan bolívar soberano	VE	Bs.		100
-VND	704	Vietnamese đồng	VN	₫		10
-VUV	548	Vanuatu vatu	VU	VT		
-WST	882	Samoan tala	WS	WS$		100
-XAF	950	CFA franc BEAC	CM;CF;CG;TD;GQ;GA	FCFA		100
+alpha3	numeric	name	used_by_alpha2	symbol	subunit_symbol	exponent
+AED	784	United Arab Emirates dirham	AE	د.إ		2
+AFN	971	Afghan afghani	AF	؋		2
+ALL	008	Albanian lek	AL	L	q	2
+AMD	051	Armenian dram	AM	֏		2
+ANG	532	Netherlands Antillean guilder	CW;SX	ƒ		2
+AOA	973	Angolan kwanza	AO	Kz		2
+ARS	032	Argentine peso	AR	$		2
+AUD	036	Australian dollar	AU;CX;CC;HM;KI;NR;NF;TV	$	c	2
+AWG	533	Aruban florin	AW	ƒ		2
+AZN	944	Azerbaijani manat	AZ	₼		2
+BAM	977	Bosnia and Herzegovina convertible mark	BA	KM		2
+BBD	052	Barbados dollar	BB	Bds$		2
+BDT	050	Bangladeshi taka	BD	৳		2
+BGN	975	Bulgarian lev	BG	лв.		2
+BHD	048	Bahraini dinar	BH	.د.ب		3
+BIF	108	Burundian franc	BI	FBu		0
+BMD	060	Bermudian dollar	BM	$		2
+BND	096	Brunei dollar	BN	B$		2
+BOB	068	Boliviano	BO	Bs.		2
+BOV	984	Bolivian Mvdol	BO	¤		2
+BRL	986	Brazilian real	BR	R$		2
+BSD	044	Bahamian dollar	BS	$		2
+BTN	064	Bhutanese ngultrum	BT	Nu.	Ch.	2
+BWP	072	Botswana pula	BW	P		2
+BYN	933	Belarusian ruble	BY	Br		2
+BZD	084	Belize dollar	BZ	$		2
+CAD	124	Canadian dollar	CA	$	¢	2
+CDF	976	Congolese franc	CD	₣		2
+CHE	947	WIR Euro	CH	¤		2
+CHF	756	Swiss franc	CH;LI	₣		2
+CHW	948	WIR Franc	CH	¤		2
+CLF	990	Unidad de Fomento	CL	¤		4
+CLP	152	Chilean peso	CL	$		0
+CNY	156	Renminbi (Chinese) yuan	CN	¥		2
+COP	170	Colombian peso	CO	$		2
+COU	970	Unidad de Valor Real (UVR)	CO	¤		2
+CRC	188	Costa Rican colon	CR	₡		2
+CUC	931	Cuban convertible peso	CU	$		2
+CUP	192	Cuban peso	CU	₱		2
+CVE	132	Cape Verdean escudo	CV	Esc		2
+CZK	203	Czech koruna	CZ	Kč	h	2
+DJF	262	Djiboutian franc	DJ	₣		0
+DKK	208	Danish krone	DK;FO;GL	kr		2
+DOP	214	Dominican peso	DO	RD$		2
+DZD	012	Algerian dinar	DZ	دج		2
+EGP	818	Egyptian pound	EG	£	pt	2
+ERN	232	Eritrean nakfa	ER	Nfk		2
+ETB	230	Ethiopian birr	ET	Br		2
+EUR	978	Euro	AX;AD;AT;BE;CY;EE;FI;FR;TF;DE;GR;GP;IE;IT;LV;LT;LU;MT;GF;MQ;YT;MC;ME;NL;PT;RE;BL;MF;PM;SM;SK;SI;ES;VA	€		2
+FJD	242	Fiji dollar	FJ	FJ$		2
+FKP	238	Falkland Islands pound	FK	£		2
+GBP	826	Pound sterling	GB;IO;IM;JE;GG	£	p	2
+GEL	981	Georgian lari	GE	ლ		2
+GHS	936	Ghanaian cedi	GH	GH₵		2
+GIP	292	Gibraltar pound	GI	£		2
+GMD	270	Gambian dalasi	GM	D		2
+GNF	324	Guinean franc	GN	₣		0
+GTQ	320	Guatemalan quetzal	GT	Q		2
+GYD	328	Guyanese dollar	GY	G$		2
+HKD	344	Hong Kong dollar	HK	HK$		2
+HNL	340	Honduran lempira	HN	L		2
+HRK	191	Croatian kuna	HR	kn	lp	2
+HTG	332	Haitian gourde	HT	G		2
+HUF	348	Hungarian forint	HU	Ft		2
+IDR	360	Indonesian rupiah	ID	Rp		2
+ILS	376	Israeli new shekel	IL;PS	₪		2
+INR	356	Indian rupee	IN;BT	₹		2
+IQD	368	Iraqi dinar	IQ	د.ع		3
+IRR	364	Iranian rial	IR	﷼		2
+ISK	352	Icelandic króna	IS	kr		0
+JMD	388	Jamaican dollar	JM	$		2
+JOD	400	Jordanian dinar	JO	JD		3
+JPY	392	Japanese yen	JP	¥		0
+KES	404	Kenyan shilling	KE	Ksh		2
+KGS	417	Kyrgyzstani som	KG	С̲		2
+KHR	116	Cambodian riel	KH	៛		2
+KMF	174	Comoro franc	KM	₣		0
+KPW	408	North Korean won	KP	₩		2
+KRW	410	South Korean won	KR	₩		0
+KWD	414	Kuwaiti dinar	KW	د.ك		3
+KYD	136	Cayman Islands dollar	KY	$		2
+KZT	398	Kazakhstani tenge	KZ	₸		2
+LAK	418	Lao kip	LA	₭		2
+LBP	422	Lebanese pound	LB	LL		2
+LKR	144	Sri Lankan rupee	LK	₨		2
+LRD	430	Liberian dollar	LR	L$		2
+LSL	426	Lesotho loti	LS	M		2
+LYD	434	Libyan dinar	LY	ل.د		3
+MAD	504	Moroccan dirham	MA;EH	د.م.		2
+MDL	498	Moldovan leu	MD	¤		2
+MGA	969	Malagasy ariary	MG	Ar		2
+MKD	807	Macedonian denar	MK	ден		2
+MMK	104	Myanmar kyat	MM	K		2
+MNT	496	Mongolian tögrög	MN	₮		2
+MOP	446	Macanese pataca	MO	MOP$		2
+MRU	929	Mauritanian ouguiya	MR	UM		2
+MUR	480	Mauritian rupee	MU	₨		2
+MVR	462	Maldivian rufiyaa	MV	Rf.		2
+MWK	454	Malawian kwacha	MW	K		2
+MXN	484	Mexican peso	MX	$	¢	2
+MXV	979	Mexican Unidad de Inversion (UDI)	MX	¤		2
+MYR	458	Malaysian ringgit	MY	RM		2
+MZN	943	Mozambican metical	MZ	MT		2
+NAD	516	Namibian dollar		N$		2
+NGN	566	Nigerian naira	NG	₦		2
+NIO	558	Nicaraguan córdoba	NI	C$		2
+NOK	578	Norwegian krone	NO;SJ;BV	kr		2
+NPR	524	Nepalese rupee	NP	₨		2
+NZD	554	New Zealand dollar	NZ;CK;NU;PN;TK	$	c	2
+OMR	512	Omani rial	OM	ر.ع.		3
+PAB	590	Panamanian balboa	PA	B/.		2
+PEN	604	Peruvian sol	PE	S/		2
+PGK	598	Papua New Guinean kina	PG	K		2
+PHP	608	Philippine peso	PH	₱		2
+PKR	586	Pakistani rupee	PK	₨		2
+PLN	985	Polish złoty	PL	zł	gr	2
+PYG	600	Paraguayan guaraní	PY	₲		0
+QAR	634	Qatari riyal	QA	ر.ق		2
+RON	946	Romanian leu	RO	L		2
+RSD	941	Serbian dinar	RS	дин		2
+RUB	643	Russian ruble	RU	₽		2
+RWF	646	Rwandan franc	RW	FRw		0
+SAR	682	Saudi riyal	SA	ر.س		2
+SBD	090	Solomon Islands dollar	SB	S$		2
+SCR	690	Seychelles rupee	SC	SRe		2
+SDG	938	Sudanese pound	SD	¤		2
+SEK	752	Swedish krona/kronor	SE	kr		2
+SGD	702	Singapore dollar	SG	S$		2
+SHP	654	Saint Helena pound	SH	£		2
+SLE	925	Sierra Leonean leone	SL	Le		2
+SLL	694	Sierra Leonean leone	SL	Le		2
+SOS	706	Somali shilling	SO	Sh.So.		2
+SRD	968	Surinamese dollar	SR	$		2
+SSP	728	South Sudanese pound	SS	¤		2
+STN	930	São Tomé and Príncipe dobra	ST	Db		2
+SVC	222	Salvadoran colón	SV	¤		2
+SYP	760	Syrian pound	SY	LS		2
+SZL	748	Swazi lilangeni	SZ	E		2
+THB	764	Thai baht	TH	฿		2
+TJS	972	Tajikistani somoni	TJ	¤		2
+TMT	934	Turkmenistan manat	TM	¤		2
+TND	788	Tunisian dinar	TN	د.ت		3
+TOP	776	Tongan paʻanga	TO	T$		2
+TRY	949	Turkish lira	TR	₺		2
+TTD	780	Trinidad and Tobago dollar	TT	$		2
+TWD	901	New Taiwan dollar	TW	NT$		2
+TZS	834	Tanzanian shilling	TZ	Tsh		2
+UAH	980	Ukrainian hryvnia	UA	₴		2
+UGX	800	Ugandan shilling	UG	USh		0
+USD	840	United States dollar	US;AS;BB;BM;IO;VG;BQ;EC;SV;GU;HT;MH;FM;MP;PW;PA;PR;TL;TC;VI;UM;KH	$	¢	2
+USN	997	United States dollar (next day)	US	$	¢	2
+UYI	940	Uruguay Peso en Unidades Indexadas (URUIURUI)	UY	¤		0
+UYU	858	Uruguayan peso	UY	$U		2
+UYW	927	Unidad previsional	UY	¤		4
+UZS	860	Uzbekistan som	UZ	¤		2
+VED	926	Venezuelan bolívar soberano	VE	Bs.		2
+VES	928	Venezuelan bolívar soberano	VE	Bs.		2
+VND	704	Vietnamese đồng	VN	₫		0
+VUV	548	Vanuatu vatu	VU	VT		0
+WST	882	Samoan tala	WS	WS$		2
+XAF	950	CFA franc BEAC	CM;CF;CG;TD;GQ;GA	FCFA		0
 XAG	961	Silver (one troy ounce)		¤		
 XAU	959	Gold (one troy ounce)		¤		
 XBA	955	European Composite Unit (EURCO)		¤		
 XBB	956	European Monetary Unit (E.M.U.-6)		¤		
 XBC	957	European Unit of Account 9 (E.U.A.-9)		¤		
 XBD	958	European Unit of Account 17 (E.U.A.-17)		¤		
-XCD	951	East Caribbean dollar	AI;AG;DM;GD;MS;KN;LC;VC	$		100
+XCD	951	East Caribbean dollar	AI;AG;DM;GD;MS;KN;LC;VC	$		2
 XDR	960	Special drawing rights		SDR		
-XOF	952	CFA franc BCEAO	BJ;BF;CI;GW;ML;NE;SN;TG	CFA		100
+XOF	952	CFA franc BCEAO	BJ;BF;CI;GW;ML;NE;SN;TG	CFA		0
 XPD	964	Palladium (one troy ounce)		¤		
-XPF	953	CFP franc (franc Pacifique)	PF;NC;WF	₣		100
-XPT	962	Platinum (one troy ounce)		¤		100
+XPF	953	CFP franc (franc Pacifique)	PF;NC;WF	₣		0
+XPT	962	Platinum (one troy ounce)		¤		
 XSU	994	SUCRE		¤		
 XTS	963	Code reserved for testing		¤		
 XUA	965	ADB Unit of Account		¤		
 XXX	999	No currency		¤		
-YER	886	Yemeni rial	YE	ر.ي		100
-ZAR	710	South African rand	LS;NA;ZA	R		100
-ZMW	967	Zambian kwacha	ZM	K		100
-ZWL	932	Zimbabwean dollar	ZW	¤		100
+YER	886	Yemeni rial	YE	ر.ي		2
+ZAR	710	South African rand	LS;NA;ZA	R		2
+ZMW	967	Zambian kwacha	ZM	K		2
+ZWL	932	Zimbabwean dollar	ZW	¤		2

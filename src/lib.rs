@@ -22,6 +22,7 @@
 //! assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
+//! assert_eq!(Currency::JPY.exponent(), Some(0));
 //! ```
 
 pub use iso_country::Country;
@@ -31,13 +32,13 @@ use serde::{Deserialize, Serialize};
 
 include!(concat!(env!("OUT_DIR"), "/isodata.rs"));
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Eq)]
 pub struct CurrencySymbol {
     pub symbol: String,
     pub subunit_symbol: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ParseCurrencyError;
 
 impl std::fmt::Display for ParseCurrencyError {
@@ -95,7 +96,7 @@ impl std::str::FromStr for Currency {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match Self::from_code(s) {
             Some(c) => Ok(c),
-            None => Err(ParseCurrencyError)
+            None => Err(ParseCurrencyError),
         }
     }
 }
@@ -149,10 +150,7 @@ mod tests {
     #[test]
     fn used_by() {
         assert_eq!(Currency::BGN.used_by(), vec![Country::BG]);
-        assert_eq!(
-            Currency::CHF.used_by(),
-            vec![Country::LI, Country::CH]
-        );
+        assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
     }
 
     #[test]
@@ -167,8 +165,21 @@ mod tests {
     fn subunit_fraction() {
         assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
         assert_eq!(Currency::DZD.subunit_fraction(), Some(100));
-        assert_eq!(Currency::MRU.subunit_fraction(), Some(5));
+        /* [Malagasy ariary](https://en.wikipedia.org/wiki/Malagasy_ariary) (`MRU`)
+        and the [Mauritanian ouguiya](https://en.wikipedia.org/wiki/Mauritanian_ouguiya) (`MGA`)
+        are technically divided into 5 subunits (iraimbilanja and khoum).
+        However, while they have a face value of "1/5" and are referred to as a "fifth" (Khoum/cinquième),
+        these are not used in practice. When written out, a single significant digit is used (example: 1.2 UM so that 10 UM = 1 MRU).
+        -- Source [Wikipedia](https://en.wikipedia.org/wiki/ISO_4217#cite_note-divby5-15). */
+        assert_eq!(Currency::MRU.subunit_fraction(), Some(100));
         assert_eq!(Currency::XAU.subunit_fraction(), None);
+    }
+
+    #[test]
+    fn subunit_exponent() {
+        assert_eq!(Currency::EUR.exponent(), Some(2));
+        assert_eq!(Currency::JPY.exponent(), Some(0));
+        assert_eq!(Currency::MRU.exponent(), Some(2));
     }
 
     #[test]
@@ -184,7 +195,10 @@ mod tests {
         let mut hashmap: HashMap<&str, Currency> = HashMap::new();
         hashmap.insert("foo", Currency::EUR);
 
-        assert_eq!(serde_json::to_string(&hashmap).unwrap(), "{\"foo\":\"EUR\"}");
+        assert_eq!(
+            serde_json::to_string(&hashmap).unwrap(),
+            "{\"foo\":\"EUR\"}"
+        );
     }
 
     #[test]
@@ -193,7 +207,7 @@ mod tests {
         v.sort();
         assert_eq!(v, vec![Currency::DKK, Currency::EUR, Currency::SEK]);
     }
-    
+
     #[test]
     fn implements_from_str() {
         use std::str::FromStr;
