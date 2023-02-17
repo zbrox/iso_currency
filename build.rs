@@ -149,7 +149,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
     writeln!(file, "    ///").unwrap();
     writeln!(file, "    /// assert_eq!(Currency::EUR.code(), \"EUR\");").unwrap();
     writeln!(file, "    /// ```").unwrap();
-    writeln!(file, "    pub fn code(&self) -> &str {{").unwrap();
+    writeln!(file, "    pub fn code(self) -> &'static str {{").unwrap();
     writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
         writeln!(
