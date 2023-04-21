@@ -40,6 +40,6 @@ assert_eq!(Currency::JPY.exponent(), Some(0));
 
 The `Currency` enum and its implementations are generated from the `isodata.tsv` file. It is a table of `<tab>` separated values. If you wanna correct some value or add some missing values you just need to make a pull request editing that table.
 
-One thing to watch out for is to have always the same amount of fields on a row, even if an optional field is missing. This means on each row you should have **5** tabs.
+One thing to watch out for is to have always the same amount of fields on a row, even if an optional field is missing. This means on each row you should have **6** tabs.
 
 The `used_by_alpha2` column is a bit different. It can be empty but if not it includes a list, separated by a semicolon (without a trailing semicolon), of `ISO 3166-1` 2-letter country codes in all caps.

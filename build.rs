@@ -441,7 +441,7 @@ fn main() {
 
     {
         let mut file =
-            BufWriter::new(File::create(&out_path).expect("Couldn't write to output file"));
+            BufWriter::new(File::create(out_path).expect("Couldn't write to output file"));
         write_enum(&mut file, &isodata);
         write_enum_impl(&mut file, &isodata);
     }
