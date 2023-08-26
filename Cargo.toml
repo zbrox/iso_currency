@@ -14,10 +14,12 @@ keywords = ["currency", "iso", "iso-4217", "iso4217"]
 [features]
 default = []
 with-serde = ["serde"]
+iterator = ["strum"]
 
 [dependencies]
 iso_country = "0.1.4"
 serde = { version = "1.0.127", optional = true, features = ["derive"] }
+strum = {version = "0.25.0", optional = true, features = ["derive"] }
 
 [dev-dependencies]
 serde_json = "1.0.66"

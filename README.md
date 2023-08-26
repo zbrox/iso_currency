@@ -15,10 +15,24 @@ The `Country` enum is re-exported from the only dependency - the [iso_country](h
 
 ## Features
 
-The crate has only one optional feature - `with-serde`. If you need serialization/deserialization support using `serde` you should include the feature in your dependency on `iso_currency`, for example like this:
+The crate has only two optional features:
 
-```toml
-iso_currency = { version = "0.4.3", features = ["with-serde"] }
+- `with-serde`
+- `iterator`
+
+### with-serde
+
+If you need serialization/deserialization support using `serde` you should include the feature in your dependency on `iso_currency`.
+
+This would derive serde's `Serialize` and `Deserialize` on `Currency`.
+
+### iterator
+
+If you specify the `iterator` feature on `iso_currency`, it will derive [strum's](https://crates.io/crates/strum) `EnumIter` trait on `Currency`, which provides an iterator over all variants of it. Here's an example usage:
+
+```rust
+use iso_currency::IntoEnumIterator;
+let mut iter = Currency::iter();
 ```
 
 ## Examples

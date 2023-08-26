@@ -30,6 +30,11 @@ pub use iso_country::Country;
 #[cfg(feature = "with-serde")]
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "iterator")]
+use strum::EnumIter;
+#[cfg(feature = "iterator")]
+pub use strum::IntoEnumIterator;
+
 include!(concat!(env!("OUT_DIR"), "/isodata.rs"));
 
 #[derive(PartialEq, Eq)]
@@ -105,8 +110,6 @@ impl std::str::FromStr for Currency {
 mod tests {
     use crate::{Country, Currency, ParseCurrencyError};
 
-    #[cfg(feature = "with-serde")]
-    use serde_json;
     #[cfg(feature = "with-serde")]
     use std::collections::HashMap;
 
@@ -215,5 +218,14 @@ mod tests {
         assert_eq!(Currency::from_str("SEK"), Ok(Currency::SEK));
         assert_eq!(Currency::from_str("BGN"), Ok(Currency::BGN));
         assert_eq!(Currency::from_str("AAA"), Err(ParseCurrencyError));
+    }
+
+    #[test]
+    #[cfg(feature = "iterator")]
+    fn test_iterator() {
+        use crate::IntoEnumIterator;
+        let mut iter = Currency::iter();
+        assert_eq!(iter.next(), Some(Currency::AED));
+        assert_eq!(iter.next(), Some(Currency::AFN));
     }
 }
