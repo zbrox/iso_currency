@@ -25,14 +25,19 @@
 //! assert_eq!(Currency::JPY.exponent(), Some(0));
 //! ```
 
+#![cfg_attr(docsrs, feature(doc_cfg))]
+
 pub use iso_country::Country;
 
 #[cfg(feature = "with-serde")]
+#[cfg_attr(docsrs, doc(cfg(feature = "with-serde")))]
 use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "iterator")]
+#[cfg_attr(docsrs, doc(cfg(feature = "iterator")))]
 use strum::EnumIter;
 #[cfg(feature = "iterator")]
+#[cfg_attr(docsrs, doc(cfg(feature = "iterator")))]
 pub use strum::IntoEnumIterator;
 
 include!(concat!(env!("OUT_DIR"), "/isodata.rs"));
