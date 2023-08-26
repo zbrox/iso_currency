@@ -233,4 +233,10 @@ mod tests {
         assert_eq!(iter.next(), Some(Currency::AED));
         assert_eq!(iter.next(), Some(Currency::AFN));
     }
+
+    #[test]
+    fn test_is_fund() {
+        assert!(Currency::BOV.is_fund());
+        assert!(!Currency::EUR.is_fund());
+    }
 }
