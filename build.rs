@@ -552,6 +552,19 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
     }
     writeln!(file, "    }}").unwrap();
     writeln!(file, "}}").unwrap();
+    
+    writeln!(file, "pub fn has_flag(self, flag: Flag) -> bool {{").unwrap();
+    writeln!(file, "    match self {{").unwrap();
+    for currency in data.iter() {
+        writeln!(
+            file,
+            "        Currency::{} => Currency::{}.flags().contains(&flag),",
+            &currency.alpha3, &currency.alpha3,
+        )
+        .unwrap();
+    }
+    writeln!(file, "    }}").unwrap();
+    writeln!(file, "}}").unwrap();
 
     writeln!(file, "}}").unwrap();
     writeln!(file).unwrap();
