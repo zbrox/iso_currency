@@ -251,4 +251,10 @@ mod tests {
         assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
         assert_eq!(Currency::VES.is_superseded(), None);
     }
+
+    #[test]
+    fn test_latest() {
+        assert_eq!(Currency::VED.latest(), Currency::VES);
+        assert_eq!(Currency::VES.latest(), Currency::VES);
+    }
 }

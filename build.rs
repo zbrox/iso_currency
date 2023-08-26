@@ -510,6 +510,22 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
     writeln!(file, "    }}").unwrap();
     writeln!(file, "}}").unwrap();
 
+    writeln!(file, "pub fn latest(self) -> Self {{").unwrap();
+    writeln!(file, "    match self {{").unwrap();
+    for currency in data.iter() {
+        writeln!(
+            file,
+            "        Currency::{} => Currency::{},",
+            &currency.alpha3, match currency.is_superseded {
+                Some(ref v) => v.clone(),
+                None => currency.alpha3.clone(),
+            }
+        )
+        .unwrap();
+    }
+    writeln!(file, "    }}").unwrap();
+    writeln!(file, "}}").unwrap();
+
     writeln!(file, "}}").unwrap();
     writeln!(file).unwrap();
 }
