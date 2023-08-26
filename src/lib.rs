@@ -221,4 +221,13 @@ mod tests {
         assert_eq!(Currency::from_str("BGN"), Ok(Currency::BGN));
         assert_eq!(Currency::from_str("AAA"), Err(ParseCurrencyError));
     }
+
+    #[test]
+    #[cfg(feature = "iterator")]
+    fn test_iterator() {
+        use crate::IntoEnumIterator;
+        let mut iter = Currency::iter();
+        assert_eq!(iter.next(), Some(Currency::AED));
+        assert_eq!(iter.next(), Some(Currency::AFN));
+    }
 }
