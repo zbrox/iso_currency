@@ -494,7 +494,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
     writeln!(file, "    }}").unwrap();
     writeln!(file, "}}").unwrap();
 
-    writeln!(file, "pub fn is_superseded(self) -> Option<Currency> {{").unwrap();
+    writeln!(file, "pub fn is_superseded(self) -> Option<Self> {{").unwrap();
     writeln!(file, "    match self {{").unwrap();
     for currency in data.iter() {
         writeln!(
