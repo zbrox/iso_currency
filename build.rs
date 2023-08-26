@@ -484,3 +484,20 @@ fn main() {
         write_enum_impl(&mut file, &isodata);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_flags() {
+        assert_eq!(parse_flags(""), (false, false, None));
+        assert_eq!(parse_flags("special"), (true, false, None));
+        assert_eq!(parse_flags("fund"), (false, true, None));
+        assert_eq!(parse_flags("superseded(USD)"), (false, false, Some("USD".into())));
+        assert_eq!(
+            parse_flags("special,fund,superseded(USD)"),
+            (true, true, Some("USD".into()))
+        );
+    }
+}
