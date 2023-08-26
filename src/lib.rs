@@ -32,6 +32,8 @@ use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "iterator")]
 use strum::EnumIter;
+#[cfg(feature = "iterator")]
+pub use strum::IntoEnumIterator;
 
 include!(concat!(env!("OUT_DIR"), "/isodata.rs"));
 
