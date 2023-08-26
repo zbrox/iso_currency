@@ -239,4 +239,10 @@ mod tests {
         assert!(Currency::BOV.is_fund());
         assert!(!Currency::EUR.is_fund());
     }
+
+    #[test]
+    fn test_is_special() {
+        assert!(Currency::XBA.is_special());
+        assert!(!Currency::EUR.is_special());
+    }
 }

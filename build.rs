@@ -480,6 +480,19 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
     }
     writeln!(file, "    }}").unwrap();
     writeln!(file, "}}").unwrap();
+    
+    writeln!(file, "pub fn is_special(self) -> bool {{").unwrap();
+    writeln!(file, "    match self {{").unwrap();
+    for currency in data.iter() {
+        writeln!(
+            file,
+            "        Currency::{} => {},",
+            &currency.alpha3, currency.is_special
+        )
+        .unwrap();
+    }
+    writeln!(file, "    }}").unwrap();
+    writeln!(file, "}}").unwrap();
 
     writeln!(file, "}}").unwrap();
     writeln!(file).unwrap();
