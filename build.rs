@@ -22,7 +22,7 @@ struct IsoData {
 fn parse_superseded(flag: &str) -> Option<String> {
     let mut superseded = None;
     if flag.starts_with("superseded") {
-        superseded = Some(flag.split('(').next().expect("Invalid format for superseded flag").to_string());
+        superseded = Some(flag.split(&['(', ')']).nth(1).expect("Invalid format for superseded flag").to_string());
     }
     superseded
 }
