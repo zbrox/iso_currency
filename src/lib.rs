@@ -111,8 +111,6 @@ mod tests {
     use crate::{Country, Currency, ParseCurrencyError};
 
     #[cfg(feature = "with-serde")]
-    use serde_json;
-    #[cfg(feature = "with-serde")]
     use std::collections::HashMap;
 
     #[test]
