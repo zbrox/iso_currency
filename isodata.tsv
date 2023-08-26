@@ -18,7 +18,7 @@ BIF	108	Burundian franc	BI	FBu		0
 BMD	060	Bermudian dollar	BM	$		2	
 BND	096	Brunei dollar	BN	B$		2	
 BOB	068	Boliviano	BO	Bs.		2	
-BOV	984	Bolivian Mvdol	BO	¤		2	
+BOV	984	Bolivian Mvdol	BO	¤		2	fund
 BRL	986	Brazilian real	BR	R$		2	
 BSD	044	Bahamian dollar	BS	$		2	
 BTN	064	Bhutanese ngultrum	BT	Nu.	Ch.	2	
@@ -27,16 +27,16 @@ BYN	933	Belarusian ruble	BY	Br		2
 BZD	084	Belize dollar	BZ	$		2	
 CAD	124	Canadian dollar	CA	$	¢	2	
 CDF	976	Congolese franc	CD	₣		2	
-CHE	947	WIR Euro	CH	¤		2	
+CHE	947	WIR Euro	CH	¤		2	fund
 CHF	756	Swiss franc	CH;LI	₣		2	
-CHW	948	WIR Franc	CH	¤		2	
-CLF	990	Unidad de Fomento	CL	¤		4	
+CHW	948	WIR Franc	CH	¤		2	fund
+CLF	990	Unidad de Fomento	CL	¤		4	fund
 CLP	152	Chilean peso	CL	$		0	
 CNY	156	Renminbi (Chinese) yuan	CN	¥		2	
 COP	170	Colombian peso	CO	$		2	
-COU	970	Unidad de Valor Real (UVR)	CO	¤		2	
+COU	970	Unidad de Valor Real (UVR)	CO	¤		2	fund
 CRC	188	Costa Rican colon	CR	₡		2	
-CUC	931	Cuban convertible peso	CU	$		2	
+CUC	931	Cuban convertible peso	CU	$		2	superseded(CUP)
 CUP	192	Cuban peso	CU	₱		2	
 CVE	132	Cape Verdean escudo	CV	Esc		2	
 CZK	203	Czech koruna	CZ	Kč	h	2	
@@ -99,7 +99,7 @@ MUR	480	Mauritian rupee	MU	₨		2
 MVR	462	Maldivian rufiyaa	MV	Rf.		2	
 MWK	454	Malawian kwacha	MW	K		2	
 MXN	484	Mexican peso	MX	$	¢	2	
-MXV	979	Mexican Unidad de Inversion (UDI)	MX	¤		2	
+MXV	979	Mexican Unidad de Inversion (UDI)	MX	¤		2	fund
 MYR	458	Malaysian ringgit	MY	RM		2	
 MZN	943	Mozambican metical	MZ	MT		2	
 NAD	516	Namibian dollar		N$	NA	2	
@@ -129,7 +129,7 @@ SEK	752	Swedish krona/kronor	SE	kr		2
 SGD	702	Singapore dollar	SG	S$		2	
 SHP	654	Saint Helena pound	SH	£		2	
 SLE	925	Sierra Leonean leone	SL	Le		2	
-SLL	694	Sierra Leonean leone	SL	Le		2	
+SLL	694	Sierra Leonean leone	SL	Le		2	superseded(SLE)
 SOS	706	Somali shilling	SO	Sh.So.		2	
 SRD	968	Surinamese dollar	SR	$		2	
 SSP	728	South Sudanese pound	SS	¤		2	
@@ -149,12 +149,12 @@ TZS	834	Tanzanian shilling	TZ	Tsh		2
 UAH	980	Ukrainian hryvnia	UA	₴		2	
 UGX	800	Ugandan shilling	UG	USh		0	
 USD	840	United States dollar	US;AS;BB;BM;IO;VG;BQ;EC;SV;GU;HT;MH;FM;MP;PW;PA;PR;TL;TC;VI;UM;KH	$	¢	2	
-USN	997	United States dollar (next day)	US	$	¢	2	
-UYI	940	Uruguay Peso en Unidades Indexadas (URUIURUI)	UY	¤		0	
+USN	997	United States dollar (next day)	US	$	¢	2	fund
+UYI	940	Uruguay Peso en Unidades Indexadas (URUIURUI)	UY	¤		0	fund
 UYU	858	Uruguayan peso	UY	$U		2	
-UYW	927	Unidad previsional	UY	¤		4	
+UYW	927	Unidad previsional	UY	¤		4	fund
 UZS	860	Uzbekistan som	UZ	¤		2	
-VED	926	Venezuelan bolívar soberano	VE	Bs.		2	
+VED	926	Venezuelan bolívar soberano	VE	Bs.		2	superseded(VES)
 VES	928	Venezuelan bolívar soberano	VE	Bs.		2	
 VND	704	Vietnamese đồng	VN	₫		0	
 VUV	548	Vanuatu vatu	VU	VT		0	
