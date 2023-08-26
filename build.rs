@@ -44,6 +44,20 @@ fn parse_flags(flags: &str) -> (bool, bool, Option<String>) {
     (is_special, is_fund, is_superseded)
 }
 
+fn flags_vec(data: &IsoData) -> String {
+    let mut flags = Vec::new();
+    if data.is_special {
+        flags.push("Flag::Special".to_string());
+    }
+    if data.is_fund {
+        flags.push("Flag::Fund".to_string());
+    }
+    if let Some(superseded) = &data.is_superseded {
+        flags.push(format!("Flag::Superseded(Currency::{})", superseded));
+    }
+    flags.join(",")
+}
+
 fn read_table() -> Vec<IsoData> {
     let reader =
         BufReader::new(File::open(TSV_TABLE_PATH).expect("Couldn't read currency data table"));
@@ -520,6 +534,19 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
                 Some(ref v) => v.clone(),
                 None => currency.alpha3.clone(),
             }
+        )
+        .unwrap();
+    }
+    writeln!(file, "    }}").unwrap();
+    writeln!(file, "}}").unwrap();
+
+    writeln!(file, "pub fn flags(self) -> Vec<Flag> {{").unwrap();
+    writeln!(file, "    match self {{").unwrap();
+    for currency in data.iter() {
+        writeln!(
+            file,
+            "        Currency::{} => vec![{}],",
+            &currency.alpha3, flags_vec(currency)
         )
         .unwrap();
     }

@@ -124,7 +124,7 @@ pub enum Flag {
 
 #[cfg(test)]
 mod tests {
-    use crate::{Country, Currency, ParseCurrencyError};
+    use crate::{Country, Currency, ParseCurrencyError, Flag};
 
     #[cfg(feature = "with-serde")]
     use std::collections::HashMap;
@@ -267,5 +267,13 @@ mod tests {
     fn test_latest() {
         assert_eq!(Currency::VED.latest(), Currency::VES);
         assert_eq!(Currency::VES.latest(), Currency::VES);
+    }
+
+    #[test]
+    fn test_flags() {
+        assert_eq!(Currency::BOV.flags(), vec![Flag::Fund]);
+        assert_eq!(Currency::XBA.flags(), vec![Flag::Special]);
+        assert_eq!(Currency::VED.flags(), vec![Flag::Superseded(Currency::VES)]);
+        assert_eq!(Currency::VES.flags(), vec![]);
     }
 }
