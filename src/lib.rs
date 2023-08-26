@@ -245,4 +245,10 @@ mod tests {
         assert!(Currency::XBA.is_special());
         assert!(!Currency::EUR.is_special());
     }
+
+    #[test]
+    fn test_is_superseded() {
+        assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
+        assert_eq!(Currency::VES.is_superseded(), None);
+    }
 }
