@@ -67,6 +67,11 @@ fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
     .unwrap();
     writeln!(
         file,
+        "#[cfg_attr(feature = \"iterator\", derive(EnumIter))]"
+    )
+    .unwrap();
+    writeln!(
+        file,
         "#[derive(Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]"
     )
     .unwrap();
