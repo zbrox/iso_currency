@@ -111,6 +111,17 @@ impl std::str::FromStr for Currency {
     }
 }
 
+/// Extra information for a currency
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Flag {
+    /// The currency is a fund
+    Fund,
+    /// The currency is a special currency
+    Special,
+    /// The currency is superseded by another currency
+    Superseded(Currency),
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{Country, Currency, ParseCurrencyError};
