@@ -75,11 +75,6 @@ impl CurrencySymbol {
     /// Data for the symbols was collected from
     /// [https://en.wikipedia.org/wiki/Currency_symbol#List_of_presently-circulating_currency_symbols]()
     ///
-    /// TODO: Add data about subunit symbols for every currency
-    /// TODO: Add data about English representations of some currency symbols
-    /// TODO: Maybe add data about alternative variants of the symbols
-    /// TODO: Add data about position of symbol (according to locale) when formatting a sum of money
-    ///
     pub fn new(symbol: &str, subunit_symbol: Option<&str>) -> CurrencySymbol {
         CurrencySymbol {
             symbol: symbol.to_owned(),
@@ -112,6 +107,11 @@ impl std::str::FromStr for Currency {
 }
 
 impl From<Country> for Currency {
+    /// Returns the regular currency used in a country
+    /// 
+    /// If a country uses multiple currencies, the first one is returned.
+    /// All currencies who are superseded by another currency are filtered out.
+    /// Same goes for funds and special currencies.
     fn from(country: Country) -> Self {
         Self::from_country(country)
             .into_iter()
