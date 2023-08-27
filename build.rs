@@ -483,38 +483,38 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
     writeln!(file, "    }}").unwrap();
     writeln!(file).unwrap();
 
-    writeln!(file, "pub fn is_fund(self) -> bool {{").unwrap();
-    writeln!(file, "    match self {{").unwrap();
+    writeln!(file, "    pub fn is_fund(self) -> bool {{").unwrap();
+    writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
         writeln!(
             file,
-            "        Currency::{} => {},",
+            "           Currency::{} => {},",
             &currency.alpha3, currency.is_fund
         )
         .unwrap();
     }
+    writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "}}").unwrap();
     
-    writeln!(file, "pub fn is_special(self) -> bool {{").unwrap();
-    writeln!(file, "    match self {{").unwrap();
+    writeln!(file, "    pub fn is_special(self) -> bool {{").unwrap();
+    writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
         writeln!(
             file,
-            "        Currency::{} => {},",
+            "           Currency::{} => {},",
             &currency.alpha3, currency.is_special
         )
         .unwrap();
     }
+    writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "}}").unwrap();
 
-    writeln!(file, "pub fn is_superseded(self) -> Option<Self> {{").unwrap();
-    writeln!(file, "    match self {{").unwrap();
+    writeln!(file, "    pub fn is_superseded(self) -> Option<Self> {{").unwrap();
+    writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
         writeln!(
             file,
-            "        Currency::{} => {},",
+            "           Currency::{} => {},",
             &currency.alpha3, match currency.is_superseded {
                 Some(ref v) => format!("Some(Currency::{})", v),
                 None => "None".into(),
@@ -522,15 +522,15 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
         )
         .unwrap();
     }
+    writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "}}").unwrap();
 
-    writeln!(file, "pub fn latest(self) -> Self {{").unwrap();
-    writeln!(file, "    match self {{").unwrap();
+    writeln!(file, "    pub fn latest(self) -> Self {{").unwrap();
+    writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
         writeln!(
             file,
-            "        Currency::{} => Currency::{},",
+            "           Currency::{} => Currency::{},",
             &currency.alpha3, match currency.is_superseded {
                 Some(ref v) => v.clone(),
                 None => currency.alpha3.clone(),
@@ -538,50 +538,50 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
         )
         .unwrap();
     }
+    writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "}}").unwrap();
 
-    writeln!(file, "pub fn flags(self) -> Vec<Flag> {{").unwrap();
-    writeln!(file, "    match self {{").unwrap();
+    writeln!(file, "    pub fn flags(self) -> Vec<Flag> {{").unwrap();
+    writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
         writeln!(
             file,
-            "        Currency::{} => vec![{}],",
+            "           Currency::{} => vec![{}],",
             &currency.alpha3, flags_vec(currency)
         )
         .unwrap();
     }
+    writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "}}").unwrap();
     
-    writeln!(file, "pub fn has_flag(self, flag: Flag) -> bool {{").unwrap();
-    writeln!(file, "    match self {{").unwrap();
+    writeln!(file, "    pub fn has_flag(self, flag: Flag) -> bool {{").unwrap();
+    writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
         writeln!(
             file,
-            "        Currency::{} => Currency::{}.flags().contains(&flag),",
+            "           Currency::{} => Currency::{}.flags().contains(&flag),",
             &currency.alpha3, &currency.alpha3,
         )
         .unwrap();
     }
+    writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "}}").unwrap();
 
-    writeln!(file, "pub fn from_country(country: Country) -> Vec<Self> {{").unwrap();
-    writeln!(file, "    match country {{").unwrap();
+    writeln!(file, "    pub fn from_country(country: Country) -> Vec<Self> {{").unwrap();
+    writeln!(file, "        match country {{").unwrap();
     for country in country_map.keys() {
         let currency_list = country_map.get(country).unwrap();
         let currency_list: String = currency_list.iter().map(|c| format!("Currency::{},", c)).collect();
         writeln!(
             file,
-            "        Country::{} => vec![{}],",
+            "           Country::{} => vec![{}],",
             country, currency_list
         )
         .unwrap();
     }
-    writeln!(file, "        _ => vec![]").unwrap();
+    writeln!(file, "            _ => vec![]").unwrap();
+    writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
-    writeln!(file, "}}").unwrap();
 
     writeln!(file, "}}").unwrap();
     writeln!(file).unwrap();
