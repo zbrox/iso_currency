@@ -282,4 +282,10 @@ mod tests {
         assert!(Currency::BOV.has_flag(Flag::Fund));
         assert!(!Currency::XBA.has_flag(Flag::Fund));
     }
+
+    #[test]
+    fn test_from_country() {
+        assert_eq!(Currency::from_country(Country::AF), vec![Currency::AFN]);
+        assert_eq!(Currency::from_country(Country::IO), vec![Currency::GBP, Currency::USD]);
+    }
 }

@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader, BufWriter, Write};
@@ -132,7 +133,7 @@ fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
     writeln!(file).unwrap();
 }
 
-fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
+fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &HashMap<String, Vec<String>>) {
     writeln!(file, "impl Currency {{").unwrap();
     writeln!(file, "    /// Returns the numeric code of the currency").unwrap();
     writeln!(file, "    ///").unwrap();
@@ -566,19 +567,49 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
     writeln!(file, "    }}").unwrap();
     writeln!(file, "}}").unwrap();
 
+    writeln!(file, "pub fn from_country(country: Country) -> Vec<Self> {{").unwrap();
+    writeln!(file, "    match country {{").unwrap();
+    for country in country_map.keys() {
+        let currency_list = country_map.get(country).unwrap();
+        let currency_list: String = currency_list.iter().map(|c| format!("Currency::{},", c)).collect();
+        writeln!(
+            file,
+            "        Country::{} => vec![{}],",
+            country, currency_list
+        )
+        .unwrap();
+    }
+    writeln!(file, "        _ => vec![]").unwrap();
+    writeln!(file, "    }}").unwrap();
+    writeln!(file, "}}").unwrap();
+
     writeln!(file, "}}").unwrap();
     writeln!(file).unwrap();
+}
+
+fn build_country_map(isodata: &[IsoData]) -> HashMap<String, Vec<String>> {
+    let mut country_map = HashMap::new();
+    for currency in isodata.iter() {
+        if let Some(used_by) = &currency.used_by {
+            for country in used_by.iter() {
+                let country_list = country_map.entry(country.to_string()).or_insert(Vec::new());
+                country_list.push(currency.alpha3.clone());
+            }
+        }
+    }
+    country_map
 }
 
 fn main() {
     let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join("isodata.rs");
 
     let isodata = read_table();
+    let country_map = build_country_map(&isodata);
 
     {
         let mut file =
             BufWriter::new(File::create(out_path).expect("Couldn't write to output file"));
         write_enum(&mut file, &isodata);
-        write_enum_impl(&mut file, &isodata);
+        write_enum_impl(&mut file, &isodata, &country_map);
     }
 }
