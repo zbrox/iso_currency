@@ -78,6 +78,7 @@ fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
     writeln!(file, "pub enum Currency {{").unwrap();
 
     for currency in data.iter() {
+        writeln!(file, "    /// {}", &currency.name).unwrap();
         writeln!(file, "    {},", &currency.alpha3).unwrap();
     }
 
