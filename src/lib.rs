@@ -111,6 +111,15 @@ impl std::str::FromStr for Currency {
     }
 }
 
+impl From<Country> for Currency {
+    fn from(country: Country) -> Self {
+        Self::from_country(country)
+            .into_iter()
+            .find(|c| c.flags().is_empty())
+            .unwrap()
+    }
+}
+
 /// Extra information for a currency
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Flag {
@@ -287,5 +296,11 @@ mod tests {
     fn test_from_country() {
         assert_eq!(Currency::from_country(Country::AF), vec![Currency::AFN]);
         assert_eq!(Currency::from_country(Country::IO), vec![Currency::GBP, Currency::USD]);
+    }
+
+    #[test]
+    fn test_from_country_trait() {
+        assert_eq!(Currency::from(Country::AF), Currency::AFN);
+        assert_eq!(Currency::from(Country::IO), Currency::GBP);
     }
 }
