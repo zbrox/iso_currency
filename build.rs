@@ -483,6 +483,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
     writeln!(file, "    }}").unwrap();
     writeln!(file).unwrap();
 
+    writeln!(file, "    /// Returns true if the currency is a fund").unwrap();
     writeln!(file, "    pub fn is_fund(self) -> bool {{").unwrap();
     writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
@@ -496,6 +497,10 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
     
+    writeln!(file, "    /// Returns true if the currency is a special currency").unwrap();
+    writeln!(file, "    ///").unwrap();
+    writeln!(file, "    /// Example of special currencies are gold, silver, the IMF's").unwrap();
+    writeln!(file, "    /// Special Drawing Rights (SDRs).").unwrap();
     writeln!(file, "    pub fn is_special(self) -> bool {{").unwrap();
     writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
@@ -509,6 +514,9 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
 
+    writeln!(file, "    /// Returns the currency that superseded this currency").unwrap();
+    writeln!(file, "    ///").unwrap();
+    writeln!(file, "    /// In case the currency is not superseded by another it will return `None`").unwrap();
     writeln!(file, "    pub fn is_superseded(self) -> Option<Self> {{").unwrap();
     writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
@@ -525,6 +533,13 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
 
+    writeln!(file, "    /// Returns either the currency itself or what superseded it").unwrap();
+    writeln!(file, "    ///").unwrap();
+    writeln!(file, "    /// In case the currency is not superseded by another it will return itself.").unwrap();
+    writeln!(file, "    /// Currently the data doesn't include any currency which has been superseded").unwrap();
+    writeln!(file, "    /// by another currency which in turn has been superseded by another currency.").unwrap();
+    writeln!(file, "    /// Therefore this doesn't follow a chain of currencies but is just").unwrap();
+    writeln!(file, "    /// a convenience method with a slightly different signature than `Currency::is_superseded`.").unwrap();
     writeln!(file, "    pub fn latest(self) -> Self {{").unwrap();
     writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
@@ -541,6 +556,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
 
+    writeln!(file, "    /// Returns a list of extra information flags about the currency").unwrap();
     writeln!(file, "    pub fn flags(self) -> Vec<Flag> {{").unwrap();
     writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
@@ -554,6 +570,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
     
+    writeln!(file, "    /// Returns true if the currency has the given flag").unwrap();
     writeln!(file, "    pub fn has_flag(self, flag: Flag) -> bool {{").unwrap();
     writeln!(file, "        match self {{").unwrap();
     for currency in data.iter() {
@@ -567,6 +584,7 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData], country_map: &H
     writeln!(file, "        }}").unwrap();
     writeln!(file, "    }}").unwrap();
 
+    writeln!(file, "    /// Returns a list of currencies used in a country").unwrap();
     writeln!(file, "    pub fn from_country(country: Country) -> Vec<Self> {{").unwrap();
     writeln!(file, "        match country {{").unwrap();
     for country in country_map.keys() {
