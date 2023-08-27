@@ -19,10 +19,18 @@
 //! assert_eq!(Currency::EUR.numeric(), 978);
 //! assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
 //! assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
+//! assert_eq!(Currency::from_country(Country::IO), vec![Currency::GBP, Currency::USD]);
+//! assert_eq!(Currency::from(Country::AF), Currency::AFN);
 //! assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
 //! assert_eq!(Currency::JPY.exponent(), Some(0));
+//! assert_eq!(Currency::XDR.is_special(), true);
+//! assert_eq!(Currency::BOV.is_fund(), true);
+//! assert_eq!(Currency::BOV.flags(), vec![iso_currency::Flag::Fund]);
+//! assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
+//! assert_eq!(Currency::VES.is_superseded(), None);
+//! assert_eq!(Currency::VED.latest(), Currency::VES);
 //! ```
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
