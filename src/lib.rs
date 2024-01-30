@@ -85,11 +85,6 @@ impl CurrencySymbol {
     /// Data for the symbols was collected from
     /// [https://en.wikipedia.org/wiki/Currency_symbol#List_of_presently-circulating_currency_symbols]()
     ///
-    /// TODO: Add data about subunit symbols for every currency
-    /// TODO: Add data about English representations of some currency symbols
-    /// TODO: Maybe add data about alternative variants of the symbols
-    /// TODO: Add data about position of symbol (according to locale) when formatting a sum of money
-    ///
     pub fn new(symbol: &str, subunit_symbol: Option<&str>) -> CurrencySymbol {
         CurrencySymbol {
             symbol: symbol.to_owned(),
