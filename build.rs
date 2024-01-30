@@ -119,7 +119,7 @@ fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
     let body: TokenStream = data
         .iter()
         .map(|currency| {
-            let currency_name = format!("{}", &currency.name);
+            let currency_name = currency.name.as_str();
             let variant = Ident::new(&currency.alpha3, Span::call_site());
             quote! {
                 #[doc = #currency_name]
@@ -137,7 +137,7 @@ fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
         }
     };
 
-    write!(file, "{}", outline.to_string()).unwrap();
+    write!(file, "{}", outline).unwrap();
 }
 
 fn generate_numeric_method(data: &[IsoData]) -> TokenStream {
@@ -239,7 +239,7 @@ fn used_by_method(data: &[IsoData]) -> TokenStream {
                 Some(v) => v
                     .iter()
                     .map(|c| {
-                        let country_ident = Ident::new(&c, Span::call_site());
+                        let country_ident = Ident::new(c, Span::call_site());
                         quote!(Country::#country_ident,)
                     })
                     .collect(),
@@ -541,7 +541,7 @@ fn latest_method(data: &[IsoData]) -> TokenStream {
             let variant = Ident::new(&currency.alpha3, Span::call_site());
             let value = match currency.is_superseded {
                 Some(ref v) => {
-                    let v = Ident::new(&v, Span::call_site());
+                    let v = Ident::new(v, Span::call_site());
                     quote!(Currency::#v)
                 }
                 None => quote!(Currency::#variant),
@@ -693,7 +693,7 @@ fn write_enum_impl(
       }
     );
 
-    write!(file, "{}", outline.to_string()).unwrap();
+    write!(file, "{}", outline).unwrap();
 }
 
 fn build_country_map(isodata: &[IsoData]) -> HashMap<String, Vec<String>> {
