@@ -19,7 +19,7 @@ iterator = ["strum"]
 [dependencies]
 iso_country = "0.1.4"
 serde = { version = "1.0.127", optional = true, features = ["derive"] }
-strum = {version = "0.25.0", optional = true, features = ["derive"] }
+strum = {version = "0.26.1", optional = true, features = ["derive"] }
 
 [dev-dependencies]
 divan = "0.1.11"
