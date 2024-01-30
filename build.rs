@@ -453,6 +453,29 @@ fn subunit_fraction_method(data: &[IsoData]) -> TokenStream {
     )
 }
 
+fn is_fund_method(data: &[IsoData]) -> TokenStream {
+    let match_arms: TokenStream = data
+        .iter()
+        .filter(|c| c.is_fund)
+        .map(|currency| {
+            let variant = Ident::new(&currency.alpha3, Span::call_site());
+            let value = currency.is_fund;
+            quote! {
+                Currency::#variant => #value,
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns true if the currency is a fund
+        pub fn is_fund(self) -> bool {
+            match self {
+                #match_arms
+                _ => false
+            }
+        }
+    )
+}
+
 fn write_enum_impl(
     file: &mut BufWriter<File>,
     data: &[IsoData],
@@ -467,6 +490,7 @@ fn write_enum_impl(
     let from_numeric_method = from_numeric_method(data);
     let exponent_method = exponent_method(data);
     let subunit_fraction_method = subunit_fraction_method(data);
+    let is_fund_method = is_fund_method(data);
 
     let outline = quote! (
       impl Currency {
@@ -487,6 +511,8 @@ fn write_enum_impl(
           #exponent_method
 
           #subunit_fraction_method
+
+          #is_fund_method
       }
     );
 
