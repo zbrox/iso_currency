@@ -40,6 +40,8 @@ let mut iter = Currency::iter();
 
 If you need to generate a JSON schema for your project, you can use the `with-schemars` feature. This will derive `schemars`'s `JsonSchema` trait on `Currency`.
 
+**NOTE**: This feature enables `with-serde` as well.
+
 ## Examples
 
 ```rust
