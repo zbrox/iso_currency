@@ -13,9 +13,9 @@ keywords = ["currency", "iso", "iso-4217", "iso4217"]
 
 [features]
 default = []
-with-serde = ["serde"]
-iterator = ["strum"]
-with-schemars = ["schemars", "with-serde"]
+with-serde = ["dep:serde"]
+iterator = ["dep:strum"]
+with-schemars = ["dep:schemars", "with-serde"]
 
 [dependencies]
 iso_country = "0.1.4"
