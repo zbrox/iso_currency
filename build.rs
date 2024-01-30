@@ -53,18 +53,19 @@ fn parse_flags(flags: &str) -> (bool, bool, Option<String>) {
     (is_special, is_fund, is_superseded)
 }
 
-fn flags_vec(data: &IsoData) -> String {
+fn flags_vec(data: &IsoData) -> TokenStream {
     let mut flags = Vec::new();
     if data.is_special {
-        flags.push("Flag::Special".to_string());
+        flags.push(quote!(Flag::Special));
     }
     if data.is_fund {
-        flags.push("Flag::Fund".to_string());
+        flags.push(quote!(Flag::Fund));
     }
     if let Some(superseded) = &data.is_superseded {
-        flags.push(format!("Flag::Superseded(Currency::{})", superseded));
+        let currency = Ident::new(superseded, Span::call_site());
+        flags.push(quote!(Flag::Superseded(Currency::#currency)));
     }
-    flags.join(",")
+    quote!(vec![#(#flags),*])
 }
 
 fn read_table() -> Vec<IsoData> {
@@ -567,6 +568,27 @@ fn latest_method(data: &[IsoData]) -> TokenStream {
     )
 }
 
+fn flags_method(isodata: &[IsoData]) -> TokenStream {
+    let match_arms: TokenStream = isodata
+        .iter()
+        .map(|currency| {
+            let variant = Ident::new(&currency.alpha3, Span::call_site());
+            let flags = flags_vec(currency);
+            quote! {
+                Currency::#variant => #flags,
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns a list of extra information flags about the currency"
+        pub fn flags(self) -> Vec<Flag> {
+            match self {
+                #match_arms
+            }
+        }
+    )
+}
+
 fn write_enum_impl(
     file: &mut BufWriter<File>,
     data: &[IsoData],
@@ -585,6 +607,7 @@ fn write_enum_impl(
     let is_special_method = is_special_method(data);
     let is_superseded_method = is_superseded_method(data);
     let latest_method = latest_method(data);
+    let flags_method = flags_method(data);
 
     let outline = quote! (
       impl Currency {
@@ -613,6 +636,8 @@ fn write_enum_impl(
           #is_superseded_method
 
           #latest_method
+
+          #flags_method
       }
     );
 
