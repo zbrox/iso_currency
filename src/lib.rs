@@ -23,6 +23,7 @@
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
 //! assert_eq!(Currency::JPY.exponent(), Some(0));
+//! assert_eq!(Currency::BOV.is_fund(), true);
 //! ```
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -234,5 +235,11 @@ mod tests {
         let mut iter = Currency::iter();
         assert_eq!(iter.next(), Some(Currency::AED));
         assert_eq!(iter.next(), Some(Currency::AFN));
+    }
+
+    #[test]
+    fn test_is_fund() {
+        assert!(Currency::BOV.is_fund());
+        assert!(!Currency::EUR.is_fund());
     }
 }
