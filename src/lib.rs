@@ -33,6 +33,8 @@ pub use iso_country::Country;
 #[cfg_attr(docsrs, doc(cfg(feature = "with-serde")))]
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "with-schemars")]
+use schemars::JsonSchema;
 #[cfg(feature = "iterator")]
 #[cfg_attr(docsrs, doc(cfg(feature = "iterator")))]
 use strum::EnumIter;
