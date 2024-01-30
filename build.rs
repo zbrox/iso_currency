@@ -454,41 +454,55 @@ fn subunit_fraction_method(data: &[IsoData]) -> TokenStream {
     )
 }
 
-fn is_fund_method(data: &[IsoData]) -> TokenStream {
-    let match_arms: TokenStream = data
+fn joint_match_currency_bool(data: &[&IsoData], value: bool) -> TokenStream {
+    let list: Vec<_> = data
         .iter()
-        .filter(|c| c.is_fund)
         .map(|currency| {
             let variant = Ident::new(&currency.alpha3, Span::call_site());
-            let value = currency.is_fund;
             quote! {
-                Currency::#variant => #value,
+                Currency::#variant
             }
         })
         .collect();
+
+    quote!(
+        #(#list)|* => #value,
+    )
+}
+
+fn is_fund_method(data: &[IsoData]) -> TokenStream {
+    let partitions: (Vec<_>, Vec<_>) = data.iter().partition(|c| c.is_fund);
+    let left_match_arms = joint_match_currency_bool(
+        partitions.0.as_slice(),
+        partitions.0.first().unwrap().is_fund,
+    );
+    let right_match_arms = joint_match_currency_bool(
+        partitions.1.as_slice(),
+        partitions.1.first().unwrap().is_fund,
+    );
+
     quote!(
         /// Returns true if the currency is a fund
         pub fn is_fund(self) -> bool {
             match self {
-                #match_arms
-                _ => false
+                #left_match_arms
+                #right_match_arms
             }
         }
     )
 }
 
 fn is_special_method(data: &[IsoData]) -> TokenStream {
-    let match_arms: TokenStream = data
-        .iter()
-        .filter(|c| c.is_special)
-        .map(|currency| {
-            let variant = Ident::new(&currency.alpha3, Span::call_site());
-            let value = currency.is_special;
-            quote! {
-                Currency::#variant => #value,
-            }
-        })
-        .collect();
+    let partitions: (Vec<_>, Vec<_>) = data.iter().partition(|c| c.is_special);
+    let left_match_arms = joint_match_currency_bool(
+        partitions.0.as_slice(),
+        partitions.0.first().unwrap().is_special,
+    );
+    let right_match_arms = joint_match_currency_bool(
+        partitions.1.as_slice(),
+        partitions.1.first().unwrap().is_special,
+    );
+
     quote!(
         /// Returns true if the currency is a special currency
         ///
@@ -496,8 +510,8 @@ fn is_special_method(data: &[IsoData]) -> TokenStream {
         /// Special Drawing Rights (SDRs).
         pub fn is_special(self) -> bool {
             match self {
-                #match_arms
-                _ => false
+                #left_match_arms
+                #right_match_arms
             }
         }
     )
