@@ -24,6 +24,7 @@
 //! assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
 //! assert_eq!(Currency::JPY.exponent(), Some(0));
 //! assert_eq!(Currency::BOV.is_fund(), true);
+//! assert_eq!(Currency::XDR.is_special(), true);
 //! ```
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -241,5 +242,11 @@ mod tests {
     fn test_is_fund() {
         assert!(Currency::BOV.is_fund());
         assert!(!Currency::EUR.is_fund());
+    }
+
+    #[test]
+    fn test_is_special() {
+        assert!(Currency::XBA.is_special());
+        assert!(!Currency::EUR.is_special());
     }
 }
