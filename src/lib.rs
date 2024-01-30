@@ -28,6 +28,7 @@
 //! assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
 //! assert_eq!(Currency::VES.is_superseded(), None);
 //! assert_eq!(Currency::VED.latest(), Currency::VES);
+//! assert_eq!(Currency::BOV.flags(), vec![iso_currency::Flag::Fund]);
 //! ```
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -118,9 +119,20 @@ impl std::str::FromStr for Currency {
     }
 }
 
+/// Extra information for a currency
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Flag {
+    /// The currency is a fund
+    Fund,
+    /// The currency is a special currency
+    Special,
+    /// The currency is superseded by another currency
+    Superseded(Currency),
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::{Country, Currency, ParseCurrencyError};
+    use crate::{Country, Currency, Flag, ParseCurrencyError};
 
     #[cfg(feature = "with-serde")]
     use std::collections::HashMap;
@@ -263,5 +275,13 @@ mod tests {
     fn test_latest() {
         assert_eq!(Currency::VED.latest(), Currency::VES);
         assert_eq!(Currency::VES.latest(), Currency::VES);
+    }
+
+    #[test]
+    fn test_flags() {
+        assert_eq!(Currency::BOV.flags(), vec![Flag::Fund]);
+        assert_eq!(Currency::XBA.flags(), vec![Flag::Special]);
+        assert_eq!(Currency::VED.flags(), vec![Flag::Superseded(Currency::VES)]);
+        assert_eq!(Currency::VES.flags(), vec![]);
     }
 }
