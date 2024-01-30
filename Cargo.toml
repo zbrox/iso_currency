@@ -24,6 +24,10 @@ strum = {version = "0.25.0", optional = true, features = ["derive"] }
 [dev-dependencies]
 serde_json = "1.0.66"
 
+[build-dependencies]
+proc-macro2 = "1.0.78"
+quote = "1.0.35"
+
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
