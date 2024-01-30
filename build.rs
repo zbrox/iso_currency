@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader, BufWriter, Write};
@@ -452,7 +453,11 @@ fn subunit_fraction_method(data: &[IsoData]) -> TokenStream {
     )
 }
 
-fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
+fn write_enum_impl(
+    file: &mut BufWriter<File>,
+    data: &[IsoData],
+    country_map: &HashMap<String, Vec<String>>,
+) {
     let numeric_method = generate_numeric_method(data);
     let name_method = name_method(data);
     let code_method = code_method(data);
@@ -488,15 +493,29 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
     write!(file, "{}", outline.to_string()).unwrap();
 }
 
+fn build_country_map(isodata: &[IsoData]) -> HashMap<String, Vec<String>> {
+    let mut country_map = HashMap::new();
+    for currency in isodata.iter() {
+        if let Some(used_by) = &currency.used_by {
+            for country in used_by.iter() {
+                let country_list = country_map.entry(country.to_string()).or_insert(Vec::new());
+                country_list.push(currency.alpha3.clone());
+            }
+        }
+    }
+    country_map
+}
+
 fn main() {
     let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join("isodata.rs");
 
     let isodata = read_table();
+    let country_map = build_country_map(&isodata);
 
     {
         let mut file =
             BufWriter::new(File::create(out_path).expect("Couldn't write to output file"));
         write_enum(&mut file, &isodata);
-        write_enum_impl(&mut file, &isodata);
+        write_enum_impl(&mut file, &isodata, &country_map);
     }
 }
