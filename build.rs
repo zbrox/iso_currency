@@ -17,6 +17,53 @@ struct IsoData {
     used_by: Option<Vec<String>>,
     subunit_symbol: Option<String>,
     exponent: Option<u16>,
+    is_special: bool,
+    is_fund: bool,
+    is_superseded: Option<String>,
+}
+
+fn parse_superseded(flag: &str) -> Option<String> {
+    let mut superseded = None;
+    if flag.starts_with("superseded") {
+        superseded = Some(
+            flag.split(&['(', ')'])
+                .nth(1)
+                .expect("Invalid format for superseded flag")
+                .to_string(),
+        );
+    }
+    superseded
+}
+
+fn parse_flags(flags: &str) -> (bool, bool, Option<String>) {
+    let mut is_special = false;
+    let mut is_fund = false;
+    let mut is_superseded = None;
+
+    for flag in flags.split(',') {
+        match flag {
+            "special" => is_special = true,
+            "fund" => is_fund = true,
+            // example superseded(USD)
+            _ => is_superseded = parse_superseded(flag),
+        }
+    }
+
+    (is_special, is_fund, is_superseded)
+}
+
+fn flags_vec(data: &IsoData) -> String {
+    let mut flags = Vec::new();
+    if data.is_special {
+        flags.push("Flag::Special".to_string());
+    }
+    if data.is_fund {
+        flags.push("Flag::Fund".to_string());
+    }
+    if let Some(superseded) = &data.is_superseded {
+        flags.push(format!("Flag::Superseded(Currency::{})", superseded));
+    }
+    flags.join(",")
 }
 
 fn read_table() -> Vec<IsoData> {
@@ -30,6 +77,7 @@ fn read_table() -> Vec<IsoData> {
             let line = line.expect("Problems reading line from ISO data CSV file");
 
             let columns: Vec<&str> = line.split('\t').collect();
+            let flags = parse_flags(columns[7]);
 
             IsoData {
                 alpha3: columns[0].into(),
@@ -57,6 +105,9 @@ fn read_table() -> Vec<IsoData> {
                         panic!("Could not parse exponent to u16 for {:?}", &columns[0])
                     })),
                 },
+                is_special: flags.0,
+                is_fund: flags.1,
+                is_superseded: flags.2,
             }
         })
         .collect()
