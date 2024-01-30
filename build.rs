@@ -589,6 +589,26 @@ fn flags_method(isodata: &[IsoData]) -> TokenStream {
     )
 }
 
+fn has_flag_method(data: &[IsoData]) -> TokenStream {
+    let match_arms: TokenStream = data
+        .iter()
+        .map(|currency| {
+            let variant = Ident::new(&currency.alpha3, Span::call_site());
+            quote! {
+                Currency::#variant => Currency::#variant.flags().contains(&flag),
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns true if the currency has the given flag
+        pub fn has_flag(self, flag: Flag) -> bool {
+            match self {
+                #match_arms
+            }
+        }
+    )
+}
+
 fn write_enum_impl(
     file: &mut BufWriter<File>,
     data: &[IsoData],
@@ -608,6 +628,7 @@ fn write_enum_impl(
     let is_superseded_method = is_superseded_method(data);
     let latest_method = latest_method(data);
     let flags_method = flags_method(data);
+    let has_flag_method = has_flag_method(data);
 
     let outline = quote! (
       impl Currency {
@@ -638,6 +659,8 @@ fn write_enum_impl(
           #latest_method
 
           #flags_method
+
+          #has_flag_method
       }
     );
 

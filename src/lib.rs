@@ -284,4 +284,10 @@ mod tests {
         assert_eq!(Currency::VED.flags(), vec![Flag::Superseded(Currency::VES)]);
         assert_eq!(Currency::VES.flags(), vec![]);
     }
+
+    #[test]
+    fn test_has_flag() {
+        assert!(Currency::BOV.has_flag(Flag::Fund));
+        assert!(!Currency::XBA.has_flag(Flag::Fund));
+    }
 }
