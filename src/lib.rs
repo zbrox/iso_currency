@@ -27,6 +27,7 @@
 //! assert_eq!(Currency::XDR.is_special(), true);
 //! assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
 //! assert_eq!(Currency::VES.is_superseded(), None);
+//! assert_eq!(Currency::VED.latest(), Currency::VES);
 //! ```
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -256,5 +257,11 @@ mod tests {
     fn test_is_superseded() {
         assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
         assert_eq!(Currency::VES.is_superseded(), None);
+    }
+
+    #[test]
+    fn test_latest() {
+        assert_eq!(Currency::VED.latest(), Currency::VES);
+        assert_eq!(Currency::VES.latest(), Currency::VES);
     }
 }
