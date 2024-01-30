@@ -19,6 +19,7 @@ The crate has only two optional features:
 
 - `with-serde`
 - `iterator`
+- `with-schemars`
 
 ### with-serde
 
@@ -34,6 +35,12 @@ If you specify the `iterator` feature on `iso_currency`, it will derive [strum's
 use iso_currency::IntoEnumIterator;
 let mut iter = Currency::iter();
 ```
+
+### with-schemars
+
+If you need to generate a JSON schema for your project, you can use the `with-schemars` feature. This will derive [`schemars's`](https://crates.io/crates/schemars) `JsonSchema` trait on `Currency`.
+
+**NOTE**: This feature enables `with-serde` as well.
 
 ## Examples
 

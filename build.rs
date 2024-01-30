@@ -77,6 +77,7 @@ fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
     let outline = quote! {
         #[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
         #[cfg_attr(feature = "iterator", derive(EnumIter))]
+        #[cfg_attr(feature = "with-schemars", derive(JsonSchema))]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
         pub enum Currency {
             #body
