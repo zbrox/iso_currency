@@ -19,6 +19,8 @@
 //! assert_eq!(Currency::EUR.numeric(), 978);
 //! assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
 //! assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
+//! assert_eq!(Currency::from_country(Country::IO), vec![Currency::GBP, Currency::USD]);
+//! assert_eq!(Currency::from(Country::AF), Currency::AFN);
 //! assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
@@ -128,6 +130,20 @@ pub enum Flag {
     Special,
     /// The currency is superseded by another currency
     Superseded(Currency),
+}
+
+impl From<Country> for Currency {
+    /// Returns the regular currency used in a country
+    ///
+    /// If a country uses multiple currencies, the first one is returned.
+    /// All currencies who are superseded by another currency are filtered out.
+    /// Same goes for funds and special currencies.
+    fn from(country: Country) -> Self {
+        Self::from_country(country)
+            .into_iter()
+            .find(|c| c.flags().is_empty())
+            .unwrap()
+    }
 }
 
 #[cfg(test)]
@@ -289,5 +305,20 @@ mod tests {
     fn test_has_flag() {
         assert!(Currency::BOV.has_flag(Flag::Fund));
         assert!(!Currency::XBA.has_flag(Flag::Fund));
+    }
+
+    #[test]
+    fn test_from_country() {
+        assert_eq!(Currency::from_country(Country::AF), vec![Currency::AFN]);
+        assert_eq!(
+            Currency::from_country(Country::IO),
+            vec![Currency::GBP, Currency::USD]
+        );
+    }
+
+    #[test]
+    fn test_from_country_trait() {
+        assert_eq!(Currency::from(Country::AF), Currency::AFN);
+        assert_eq!(Currency::from(Country::IO), Currency::GBP);
     }
 }

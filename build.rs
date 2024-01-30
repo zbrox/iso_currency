@@ -609,6 +609,32 @@ fn has_flag_method(data: &[IsoData]) -> TokenStream {
     )
 }
 
+fn from_country_method(country_map: &HashMap<String, Vec<String>>) -> TokenStream {
+    let match_arms: TokenStream = country_map
+        .iter()
+        .map(|(country, currencies)| {
+            let country = Ident::new(country, Span::call_site());
+            let currency_vec: TokenStream = currencies
+                .iter()
+                .map(|currency| Ident::new(currency, Span::call_site()))
+                .map(|ident| quote!(Currency::#ident,))
+                .collect();
+            quote! {
+                Country::#country => vec![#currency_vec],
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns a list of currencies used in a country
+        pub fn from_country(country: Country) -> Vec<Self> {
+            match country {
+                #match_arms
+                _ => vec![]
+            }
+        }
+    )
+}
+
 fn write_enum_impl(
     file: &mut BufWriter<File>,
     data: &[IsoData],
@@ -629,6 +655,7 @@ fn write_enum_impl(
     let latest_method = latest_method(data);
     let flags_method = flags_method(data);
     let has_flag_method = has_flag_method(data);
+    let from_country_method = from_country_method(country_map);
 
     let outline = quote! (
       impl Currency {
@@ -661,6 +688,8 @@ fn write_enum_impl(
           #flags_method
 
           #has_flag_method
+
+          #from_country_method
       }
     );
 
