@@ -502,6 +502,37 @@ fn is_special_method(data: &[IsoData]) -> TokenStream {
     )
 }
 
+fn is_superseded_method(data: &[IsoData]) -> TokenStream {
+    let match_arms: TokenStream = data
+        .iter()
+        .filter(|c| c.is_superseded.is_some())
+        .map(|currency| {
+            let variant = Ident::new(&currency.alpha3, Span::call_site());
+            let value = match &currency.is_superseded {
+                Some(v) => {
+                    let v = Ident::new(v, Span::call_site());
+                    quote!(Some(Currency::#v))
+                }
+                None => quote!(None),
+            };
+            quote! {
+                Currency::#variant => #value,
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns the currency that superseded this currency
+        ///
+        /// In case the currency is not superseded by another it will return `None`
+        pub fn is_superseded(self) -> Option<Self> {
+            match self {
+                #match_arms
+                _ => None
+            }
+        }
+    )
+}
+
 fn write_enum_impl(
     file: &mut BufWriter<File>,
     data: &[IsoData],
@@ -518,6 +549,7 @@ fn write_enum_impl(
     let subunit_fraction_method = subunit_fraction_method(data);
     let is_fund_method = is_fund_method(data);
     let is_special_method = is_special_method(data);
+    let is_superseded_method = is_superseded_method(data);
 
     let outline = quote! (
       impl Currency {
@@ -542,6 +574,8 @@ fn write_enum_impl(
           #is_fund_method
 
           #is_special_method
+
+          #is_superseded_method
       }
     );
 
