@@ -1,8 +1,9 @@
 # ISO 4217 currency codes
 
 [![docs badge](https://docs.rs/iso_currency/badge.svg)](https://docs.rs/iso_currency)
-![build badge](https://github.com/zbrox/iso_currency/workflows/Build/badge.svg)
-![crates badge](https://img.shields.io/crates/v/iso_currency.svg)
+[![build badge](https://github.com/zbrox/iso_currency/workflows/Build/badge.svg)](https://github.com/zbrox/iso_currency/actions/workflows/build.yml)
+[![crates badge](https://img.shields.io/crates/v/iso_currency.svg)](https://crates.io/crates/iso_currency)
+![license badge](https://img.shields.io/crates/l/iso_currency.svg)
 
 This crate provides an enum that represents all ISO 4217 currencies and
 has simple methods to convert between numeric and character code, list of
