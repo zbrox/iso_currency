@@ -19,10 +19,18 @@
 //! assert_eq!(Currency::EUR.numeric(), 978);
 //! assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
 //! assert_eq!(Currency::from_code("EUR"), Some(Currency::EUR));
+//! assert_eq!(Currency::from_country(Country::IO), vec![Currency::GBP, Currency::USD]);
+//! assert_eq!(Currency::from(Country::AF), Currency::AFN);
 //! assert_eq!(Currency::CHF.used_by(), vec![Country::LI, Country::CH]);
 //! assert_eq!(format!("{}", Currency::EUR.symbol()), "€");
 //! assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
 //! assert_eq!(Currency::JPY.exponent(), Some(0));
+//! assert_eq!(Currency::BOV.is_fund(), true);
+//! assert_eq!(Currency::XDR.is_special(), true);
+//! assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
+//! assert_eq!(Currency::VES.is_superseded(), None);
+//! assert_eq!(Currency::VED.latest(), Currency::VES);
+//! assert_eq!(Currency::BOV.flags(), vec![iso_currency::Flag::Fund]);
 //! ```
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -77,11 +85,6 @@ impl CurrencySymbol {
     /// Data for the symbols was collected from
     /// [https://en.wikipedia.org/wiki/Currency_symbol#List_of_presently-circulating_currency_symbols]()
     ///
-    /// TODO: Add data about subunit symbols for every currency
-    /// TODO: Add data about English representations of some currency symbols
-    /// TODO: Maybe add data about alternative variants of the symbols
-    /// TODO: Add data about position of symbol (according to locale) when formatting a sum of money
-    ///
     pub fn new(symbol: &str, subunit_symbol: Option<&str>) -> CurrencySymbol {
         CurrencySymbol {
             symbol: symbol.to_owned(),
@@ -113,9 +116,34 @@ impl std::str::FromStr for Currency {
     }
 }
 
+/// Extra information for a currency
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Flag {
+    /// The currency is a fund
+    Fund,
+    /// The currency is a special currency
+    Special,
+    /// The currency is superseded by another currency
+    Superseded(Currency),
+}
+
+impl From<Country> for Currency {
+    /// Returns the regular currency used in a country
+    ///
+    /// If a country uses multiple currencies, the first one is returned.
+    /// All currencies who are superseded by another currency are filtered out.
+    /// Same goes for funds and special currencies.
+    fn from(country: Country) -> Self {
+        Self::from_country(country)
+            .into_iter()
+            .find(|c| c.flags().is_empty())
+            .unwrap()
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::{Country, Currency, ParseCurrencyError};
+    use crate::{Country, Currency, Flag, ParseCurrencyError};
 
     #[cfg(feature = "with-serde")]
     use std::collections::HashMap;
@@ -234,5 +262,58 @@ mod tests {
         let mut iter = Currency::iter();
         assert_eq!(iter.next(), Some(Currency::AED));
         assert_eq!(iter.next(), Some(Currency::AFN));
+    }
+
+    #[test]
+    fn test_is_fund() {
+        assert!(Currency::BOV.is_fund());
+        assert!(!Currency::EUR.is_fund());
+    }
+
+    #[test]
+    fn test_is_special() {
+        assert!(Currency::XBA.is_special());
+        assert!(!Currency::EUR.is_special());
+    }
+
+    #[test]
+    fn test_is_superseded() {
+        assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
+        assert_eq!(Currency::VES.is_superseded(), None);
+    }
+
+    #[test]
+    fn test_latest() {
+        assert_eq!(Currency::VED.latest(), Currency::VES);
+        assert_eq!(Currency::VES.latest(), Currency::VES);
+    }
+
+    #[test]
+    fn test_flags() {
+        assert_eq!(Currency::BOV.flags(), vec![Flag::Fund]);
+        assert_eq!(Currency::XBA.flags(), vec![Flag::Special]);
+        assert_eq!(Currency::VED.flags(), vec![Flag::Superseded(Currency::VES)]);
+        assert_eq!(Currency::VES.flags(), vec![]);
+    }
+
+    #[test]
+    fn test_has_flag() {
+        assert!(Currency::BOV.has_flag(Flag::Fund));
+        assert!(!Currency::XBA.has_flag(Flag::Fund));
+    }
+
+    #[test]
+    fn test_from_country() {
+        assert_eq!(Currency::from_country(Country::AF), vec![Currency::AFN]);
+        assert_eq!(
+            Currency::from_country(Country::IO),
+            vec![Currency::GBP, Currency::USD]
+        );
+    }
+
+    #[test]
+    fn test_from_country_trait() {
+        assert_eq!(Currency::from(Country::AF), Currency::AFN);
+        assert_eq!(Currency::from(Country::IO), Currency::GBP);
     }
 }

@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader, BufWriter, Write};
@@ -17,6 +18,54 @@ struct IsoData {
     used_by: Option<Vec<String>>,
     subunit_symbol: Option<String>,
     exponent: Option<u16>,
+    is_special: bool,
+    is_fund: bool,
+    is_superseded: Option<String>,
+}
+
+fn parse_superseded(flag: &str) -> Option<String> {
+    let mut superseded = None;
+    if flag.starts_with("superseded") {
+        superseded = Some(
+            flag.split(&['(', ')'])
+                .nth(1)
+                .expect("Invalid format for superseded flag")
+                .to_string(),
+        );
+    }
+    superseded
+}
+
+fn parse_flags(flags: &str) -> (bool, bool, Option<String>) {
+    let mut is_special = false;
+    let mut is_fund = false;
+    let mut is_superseded = None;
+
+    for flag in flags.split(',') {
+        match flag {
+            "special" => is_special = true,
+            "fund" => is_fund = true,
+            // example superseded(USD)
+            _ => is_superseded = parse_superseded(flag),
+        }
+    }
+
+    (is_special, is_fund, is_superseded)
+}
+
+fn flags_vec(data: &IsoData) -> TokenStream {
+    let mut flags = Vec::new();
+    if data.is_special {
+        flags.push(quote!(Flag::Special));
+    }
+    if data.is_fund {
+        flags.push(quote!(Flag::Fund));
+    }
+    if let Some(superseded) = &data.is_superseded {
+        let currency = Ident::new(superseded, Span::call_site());
+        flags.push(quote!(Flag::Superseded(Currency::#currency)));
+    }
+    quote!(vec![#(#flags),*])
 }
 
 fn read_table() -> Vec<IsoData> {
@@ -30,6 +79,7 @@ fn read_table() -> Vec<IsoData> {
             let line = line.expect("Problems reading line from ISO data CSV file");
 
             let columns: Vec<&str> = line.split('\t').collect();
+            let flags = parse_flags(columns[7]);
 
             IsoData {
                 alpha3: columns[0].into(),
@@ -57,6 +107,9 @@ fn read_table() -> Vec<IsoData> {
                         panic!("Could not parse exponent to u16 for {:?}", &columns[0])
                     })),
                 },
+                is_special: flags.0,
+                is_fund: flags.1,
+                is_superseded: flags.2,
             }
         })
         .collect()
@@ -66,7 +119,7 @@ fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
     let body: TokenStream = data
         .iter()
         .map(|currency| {
-            let currency_name = format!("{}", &currency.name);
+            let currency_name = currency.name.as_str();
             let variant = Ident::new(&currency.alpha3, Span::call_site());
             quote! {
                 #[doc = #currency_name]
@@ -84,7 +137,7 @@ fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
         }
     };
 
-    write!(file, "{}", outline.to_string()).unwrap();
+    write!(file, "{}", outline).unwrap();
 }
 
 fn generate_numeric_method(data: &[IsoData]) -> TokenStream {
@@ -186,7 +239,7 @@ fn used_by_method(data: &[IsoData]) -> TokenStream {
                 Some(v) => v
                     .iter()
                     .map(|c| {
-                        let country_ident = Ident::new(&c, Span::call_site());
+                        let country_ident = Ident::new(c, Span::call_site());
                         quote!(Country::#country_ident,)
                     })
                     .collect(),
@@ -401,7 +454,206 @@ fn subunit_fraction_method(data: &[IsoData]) -> TokenStream {
     )
 }
 
-fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
+fn joint_match_currency_bool(data: &[&IsoData], value: bool) -> TokenStream {
+    let list: Vec<_> = data
+        .iter()
+        .map(|currency| {
+            let variant = Ident::new(&currency.alpha3, Span::call_site());
+            quote! {
+                Currency::#variant
+            }
+        })
+        .collect();
+
+    quote!(
+        #(#list)|* => #value,
+    )
+}
+
+fn is_fund_method(data: &[IsoData]) -> TokenStream {
+    let partitions: (Vec<_>, Vec<_>) = data.iter().partition(|c| c.is_fund);
+    let left_match_arms = joint_match_currency_bool(
+        partitions.0.as_slice(),
+        partitions.0.first().unwrap().is_fund,
+    );
+    let right_match_arms = joint_match_currency_bool(
+        partitions.1.as_slice(),
+        partitions.1.first().unwrap().is_fund,
+    );
+
+    quote!(
+        /// Returns true if the currency is a fund
+        pub fn is_fund(self) -> bool {
+            match self {
+                #left_match_arms
+                #right_match_arms
+            }
+        }
+    )
+}
+
+fn is_special_method(data: &[IsoData]) -> TokenStream {
+    let partitions: (Vec<_>, Vec<_>) = data.iter().partition(|c| c.is_special);
+    let left_match_arms = joint_match_currency_bool(
+        partitions.0.as_slice(),
+        partitions.0.first().unwrap().is_special,
+    );
+    let right_match_arms = joint_match_currency_bool(
+        partitions.1.as_slice(),
+        partitions.1.first().unwrap().is_special,
+    );
+
+    quote!(
+        /// Returns true if the currency is a special currency
+        ///
+        /// Example of special currencies are gold, silver, the IMF's
+        /// Special Drawing Rights (SDRs).
+        pub fn is_special(self) -> bool {
+            match self {
+                #left_match_arms
+                #right_match_arms
+            }
+        }
+    )
+}
+
+fn is_superseded_method(data: &[IsoData]) -> TokenStream {
+    let match_arms: TokenStream = data
+        .iter()
+        .filter(|c| c.is_superseded.is_some())
+        .map(|currency| {
+            let variant = Ident::new(&currency.alpha3, Span::call_site());
+            let value = match &currency.is_superseded {
+                Some(v) => {
+                    let v = Ident::new(v, Span::call_site());
+                    quote!(Some(Currency::#v))
+                }
+                None => quote!(None),
+            };
+            quote! {
+                Currency::#variant => #value,
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns the currency that superseded this currency
+        ///
+        /// In case the currency is not superseded by another it will return `None`
+        pub fn is_superseded(self) -> Option<Self> {
+            match self {
+                #match_arms
+                _ => None
+            }
+        }
+    )
+}
+
+fn latest_method(data: &[IsoData]) -> TokenStream {
+    let match_arms: TokenStream = data
+        .iter()
+        .map(|currency| {
+            let variant = Ident::new(&currency.alpha3, Span::call_site());
+            let value = match currency.is_superseded {
+                Some(ref v) => {
+                    let v = Ident::new(v, Span::call_site());
+                    quote!(Currency::#v)
+                }
+                None => quote!(Currency::#variant),
+            };
+
+            quote! {
+                Currency::#variant => #value,
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns either the currency itself or what superseded it
+        ///
+        /// In case the currency is not superseded by another it will return itself.
+        /// Currently the data doesn't include any currency which has been superseded
+        /// by another currency which in turn has been superseded by another currency.
+        /// Therefore this doesn't follow a chain of currencies but is just
+        /// a convenience method with a slightly different signature than `Currency::is_superseded`.
+        pub fn latest(self) -> Self {
+            match self {
+                #match_arms
+            }
+        }
+    )
+}
+
+fn flags_method(isodata: &[IsoData]) -> TokenStream {
+    let match_arms: TokenStream = isodata
+        .iter()
+        .map(|currency| {
+            let variant = Ident::new(&currency.alpha3, Span::call_site());
+            let flags = flags_vec(currency);
+            quote! {
+                Currency::#variant => #flags,
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns a list of extra information flags about the currency"
+        pub fn flags(self) -> Vec<Flag> {
+            match self {
+                #match_arms
+            }
+        }
+    )
+}
+
+fn has_flag_method(data: &[IsoData]) -> TokenStream {
+    let match_arms: TokenStream = data
+        .iter()
+        .map(|currency| {
+            let variant = Ident::new(&currency.alpha3, Span::call_site());
+            quote! {
+                Currency::#variant => Currency::#variant.flags().contains(&flag),
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns true if the currency has the given flag
+        pub fn has_flag(self, flag: Flag) -> bool {
+            match self {
+                #match_arms
+            }
+        }
+    )
+}
+
+fn from_country_method(country_map: &HashMap<String, Vec<String>>) -> TokenStream {
+    let match_arms: TokenStream = country_map
+        .iter()
+        .map(|(country, currencies)| {
+            let country = Ident::new(country, Span::call_site());
+            let currency_vec: TokenStream = currencies
+                .iter()
+                .map(|currency| Ident::new(currency, Span::call_site()))
+                .map(|ident| quote!(Currency::#ident,))
+                .collect();
+            quote! {
+                Country::#country => vec![#currency_vec],
+            }
+        })
+        .collect();
+    quote!(
+        /// Returns a list of currencies used in a country
+        pub fn from_country(country: Country) -> Vec<Self> {
+            match country {
+                #match_arms
+                _ => vec![]
+            }
+        }
+    )
+}
+
+fn write_enum_impl(
+    file: &mut BufWriter<File>,
+    data: &[IsoData],
+    country_map: &HashMap<String, Vec<String>>,
+) {
     let numeric_method = generate_numeric_method(data);
     let name_method = name_method(data);
     let code_method = code_method(data);
@@ -411,6 +663,13 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
     let from_numeric_method = from_numeric_method(data);
     let exponent_method = exponent_method(data);
     let subunit_fraction_method = subunit_fraction_method(data);
+    let is_fund_method = is_fund_method(data);
+    let is_special_method = is_special_method(data);
+    let is_superseded_method = is_superseded_method(data);
+    let latest_method = latest_method(data);
+    let flags_method = flags_method(data);
+    let has_flag_method = has_flag_method(data);
+    let from_country_method = from_country_method(country_map);
 
     let outline = quote! (
       impl Currency {
@@ -431,21 +690,49 @@ fn write_enum_impl(file: &mut BufWriter<File>, data: &[IsoData]) {
           #exponent_method
 
           #subunit_fraction_method
+
+          #is_fund_method
+
+          #is_special_method
+
+          #is_superseded_method
+
+          #latest_method
+
+          #flags_method
+
+          #has_flag_method
+
+          #from_country_method
       }
     );
 
-    write!(file, "{}", outline.to_string()).unwrap();
+    write!(file, "{}", outline).unwrap();
+}
+
+fn build_country_map(isodata: &[IsoData]) -> HashMap<String, Vec<String>> {
+    let mut country_map = HashMap::new();
+    for currency in isodata.iter() {
+        if let Some(used_by) = &currency.used_by {
+            for country in used_by.iter() {
+                let country_list = country_map.entry(country.to_string()).or_insert(Vec::new());
+                country_list.push(currency.alpha3.clone());
+            }
+        }
+    }
+    country_map
 }
 
 fn main() {
     let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join("isodata.rs");
 
     let isodata = read_table();
+    let country_map = build_country_map(&isodata);
 
     {
         let mut file =
             BufWriter::new(File::create(out_path).expect("Couldn't write to output file"));
         write_enum(&mut file, &isodata);
-        write_enum_impl(&mut file, &isodata);
+        write_enum_impl(&mut file, &isodata, &country_map);
     }
 }
