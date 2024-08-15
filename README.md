@@ -16,7 +16,7 @@ The `Country` enum is re-exported from the only dependency - the [iso_country](h
 
 ## Features
 
-The crate has only two optional features:
+The crate has some optional features:
 
 - `with-serde`
 - `iterator`
