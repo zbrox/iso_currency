@@ -141,6 +141,54 @@ impl From<Country> for Currency {
     }
 }
 
+#[cfg(feature = "with-sqlx-sqlite")]
+impl sqlx::Decode<'_, sqlx::Sqlite> for Currency {
+    fn decode(value: sqlx::sqlite::SqliteValueRef<'_>) -> Result<Self, sqlx::error::BoxDynError> {
+        let code: String = sqlx::Decode::<'_, sqlx::Sqlite>::decode(value)?;
+        Currency::from_code(&code)
+            .ok_or_else(|| sqlx::error::BoxDynError::from("Invalid currency code"))
+    }
+}
+
+#[cfg(feature = "with-sqlx-sqlite")]
+impl sqlx::Type<sqlx::Sqlite> for Currency {
+    fn type_info() -> sqlx::sqlite::SqliteTypeInfo {
+        <String as sqlx::Type<sqlx::Sqlite>>::type_info()
+    }
+}
+
+#[cfg(feature = "with-sqlx-postgres")]
+impl sqlx::Decode<'_, sqlx::Postgres> for Currency {
+    fn decode(value: sqlx::postgres::PgValueRef<'_>) -> Result<Self, sqlx::error::BoxDynError> {
+        let code: String = sqlx::Decode::<'_, sqlx::Postgres>::decode(value)?;
+        Currency::from_code(&code)
+            .ok_or_else(|| sqlx::error::BoxDynError::from("Invalid currency code"))
+    }
+}
+
+#[cfg(feature = "with-sqlx-postgres")]
+impl sqlx::Type<sqlx::Postgres> for Currency {
+    fn type_info() -> sqlx::postgres::PgTypeInfo {
+        <String as sqlx::Type<sqlx::Postgres>>::type_info()
+    }
+}
+
+#[cfg(feature = "with-sqlx-mysql")]
+impl sqlx::Decode<'_, sqlx::MySql> for Currency {
+    fn decode(value: sqlx::mysql::MySqlValueRef<'_>) -> Result<Self, sqlx::error::BoxDynError> {
+        let code: String = sqlx::Decode::<'_, sqlx::MySql>::decode(value)?;
+        Currency::from_code(&code)
+            .ok_or_else(|| sqlx::error::BoxDynError::from("Invalid currency code"))
+    }
+}
+
+#[cfg(feature = "with-sqlx-mysql")]
+impl sqlx::Type<sqlx::MySql> for Currency {
+    fn type_info() -> sqlx::mysql::MySqlTypeInfo {
+        <String as sqlx::Type<sqlx::MySql>>::type_info()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{Country, Currency, Flag, ParseCurrencyError};
