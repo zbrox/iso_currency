@@ -24,4 +24,4 @@ jobs:
         with:
           toolchain: stable
           command: build
-          args: --release
+          args: --release --all-features
