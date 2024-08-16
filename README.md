@@ -21,6 +21,9 @@ The crate has some optional features:
 - `with-serde`
 - `iterator`
 - `with-schemars`
+- `with-sqlx-sqlite`
+- `with-sqlx-postgres`
+- `with-sqlx-mysql`
 
 ### with-serde
 
@@ -42,6 +45,18 @@ let mut iter = Currency::iter();
 If you need to generate a JSON schema for your project, you can use the `with-schemars` feature. This will derive [`schemars's`](https://crates.io/crates/schemars) `JsonSchema` trait on `Currency`.
 
 **NOTE**: This feature enables `with-serde` as well.
+
+### with-sqlx-sqlite
+
+Implements the `Type` and `Decode` traits from [sqlx](https://github.com/launchbadge/sqlx) version >0.7 for SQLite on the `Currency` struct.
+
+### with-sqlx-postgres
+
+Implements the `Type` and `Decode` traits from [sqlx](https://github.com/launchbadge/sqlx) version >0.7 for PostgreSQL on the `Currency` struct.
+
+### with-sqlx-mysql
+
+Implements the `Type` and `Decode` traits from [sqlx](https://github.com/launchbadge/sqlx) version >0.7 for MySQL on the `Currency` struct.
 
 ## Examples
 
