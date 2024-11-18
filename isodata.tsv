@@ -179,4 +179,5 @@ XXX	999	No currency		¤			special
 YER	886	Yemeni rial	YE	ر.ي		2	
 ZAR	710	South African rand	LS;NA;ZA	R		2	
 ZMW	967	Zambian kwacha	ZM	K		2	
-ZWL	932	Zimbabwean dollar	ZW	¤		2	
+ZWL	932	Zimbabwean dollar	ZW	¤		2	superseded(ZWG)
+ZWG	924	Zimbabwe Gold	ZW	¤		2	
