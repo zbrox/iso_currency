@@ -724,6 +724,8 @@ fn build_country_map(isodata: &[IsoData]) -> HashMap<String, Vec<String>> {
 }
 
 fn main() {
+    println!("cargo:rerun-if-changed={TSV_TABLE_PATH}");
+    
     let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join("isodata.rs");
 
     let isodata = read_table();
