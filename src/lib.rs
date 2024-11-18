@@ -27,9 +27,9 @@
 //! assert_eq!(Currency::JPY.exponent(), Some(0));
 //! assert_eq!(Currency::BOV.is_fund(), true);
 //! assert_eq!(Currency::XDR.is_special(), true);
-//! assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
-//! assert_eq!(Currency::VES.is_superseded(), None);
-//! assert_eq!(Currency::VED.latest(), Currency::VES);
+//! assert_eq!(Currency::VES.is_superseded(), Some(Currency::VED));
+//! assert_eq!(Currency::VED.is_superseded(), None);
+//! assert_eq!(Currency::VES.latest(), Currency::VED);
 //! assert_eq!(Currency::BOV.flags(), vec![iso_currency::Flag::Fund]);
 //! ```
 
@@ -326,22 +326,22 @@ mod tests {
 
     #[test]
     fn test_is_superseded() {
-        assert_eq!(Currency::VED.is_superseded(), Some(Currency::VES));
-        assert_eq!(Currency::VES.is_superseded(), None);
+        assert_eq!(Currency::VES.is_superseded(), Some(Currency::VED));
+        assert_eq!(Currency::VED.is_superseded(), None);
     }
 
     #[test]
     fn test_latest() {
-        assert_eq!(Currency::VED.latest(), Currency::VES);
-        assert_eq!(Currency::VES.latest(), Currency::VES);
+        assert_eq!(Currency::VED.latest(), Currency::VED);
+        assert_eq!(Currency::VES.latest(), Currency::VED);
     }
 
     #[test]
     fn test_flags() {
         assert_eq!(Currency::BOV.flags(), vec![Flag::Fund]);
         assert_eq!(Currency::XBA.flags(), vec![Flag::Special]);
-        assert_eq!(Currency::VED.flags(), vec![Flag::Superseded(Currency::VES)]);
-        assert_eq!(Currency::VES.flags(), vec![]);
+        assert_eq!(Currency::VES.flags(), vec![Flag::Superseded(Currency::VED)]);
+        assert_eq!(Currency::VED.flags(), vec![]);
     }
 
     #[test]
