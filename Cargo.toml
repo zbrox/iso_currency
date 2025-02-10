@@ -24,7 +24,7 @@ with-sqlx-mysql = ["dep:sqlx", "sqlx/mysql"]
 iso_country = "0.1.4"
 schemars = { version = "0.8.16", optional = true }
 serde = { version = "1.0.127", optional = true, features = ["derive"] }
-strum = { version = "0.26.1", optional = true, features = ["derive"] }
+strum = { version = "0.27.0", optional = true, features = ["derive"] }
 sqlx = { version = ">0.7", optional = true }
 
 [dev-dependencies]
