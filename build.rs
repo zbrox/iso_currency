@@ -1,8 +1,10 @@
-use std::collections::HashMap;
-use std::env;
-use std::fs::File;
-use std::io::{BufRead, BufReader, BufWriter, Write};
-use std::path::Path;
+use std::{
+    collections::HashMap,
+    env,
+    fs::File,
+    io::{BufRead, BufReader, BufWriter, Write},
+    path::Path,
+};
 
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
@@ -341,8 +343,10 @@ fn from_code_method(data: &[IsoData]) -> TokenStream {
             if code.len() != 3 {
                 return None;
             }
+            #[allow(clippy::match_single_binding)]
             match code {
                 #match_arms
+                #[allow(unreachable_patterns)]
                 _ => None,
             }
         }
@@ -371,8 +375,10 @@ fn from_numeric_method(data: &[IsoData]) -> TokenStream {
         /// assert_eq!(Currency::from_numeric(978), Some(Currency::EUR));
         /// ```
         pub fn from_numeric(numeric_code: u16) -> Option<Currency> {
+            #[allow(clippy::match_single_binding)]
             match numeric_code {
                 #match_arms
+                #[allow(unreachable_patterns)]
                 _ => None,
             }
         }
@@ -409,8 +415,10 @@ fn exponent_method(data: &[IsoData]) -> TokenStream {
         /// assert_eq!(Currency::JPY.exponent(), Some(0));
         /// ```
         pub fn exponent(self) -> Option<u16> {
+            #[allow(clippy::match_single_binding)]
             match self {
                 #match_arms
+                #[allow(unreachable_patterns)]
                 _ => None,
             }
         }
@@ -446,8 +454,10 @@ fn subunit_fraction_method(data: &[IsoData]) -> TokenStream {
         /// assert_eq!(Currency::EUR.subunit_fraction(), Some(100));
         /// ```
         pub fn subunit_fraction(self) -> Option<u16> {
+            #[allow(clippy::match_single_binding)]
             match self {
                 #match_arms
+                #[allow(unreachable_patterns)]
                 _ => None,
             }
         }
@@ -472,14 +482,22 @@ fn joint_match_currency_bool(data: &[&IsoData], value: bool) -> TokenStream {
 
 fn is_fund_method(data: &[IsoData]) -> TokenStream {
     let partitions: (Vec<_>, Vec<_>) = data.iter().partition(|c| c.is_fund);
-    let left_match_arms = joint_match_currency_bool(
-        partitions.0.as_slice(),
-        partitions.0.first().unwrap().is_fund,
-    );
-    let right_match_arms = joint_match_currency_bool(
-        partitions.1.as_slice(),
-        partitions.1.first().unwrap().is_fund,
-    );
+    let left_match_arms = if !partitions.0.is_empty() {
+        joint_match_currency_bool(
+            partitions.0.as_slice(),
+            partitions.0.first().unwrap().is_fund,
+        )
+    } else {
+        quote!()
+    };
+    let right_match_arms = if !partitions.1.is_empty() {
+        joint_match_currency_bool(
+            partitions.1.as_slice(),
+            partitions.1.first().unwrap().is_fund,
+        )
+    } else {
+        quote!()
+    };
 
     quote!(
         /// Returns true if the currency is a fund
@@ -494,14 +512,22 @@ fn is_fund_method(data: &[IsoData]) -> TokenStream {
 
 fn is_special_method(data: &[IsoData]) -> TokenStream {
     let partitions: (Vec<_>, Vec<_>) = data.iter().partition(|c| c.is_special);
-    let left_match_arms = joint_match_currency_bool(
-        partitions.0.as_slice(),
-        partitions.0.first().unwrap().is_special,
-    );
-    let right_match_arms = joint_match_currency_bool(
-        partitions.1.as_slice(),
-        partitions.1.first().unwrap().is_special,
-    );
+    let left_match_arms = if !partitions.0.is_empty() {
+        joint_match_currency_bool(
+            partitions.0.as_slice(),
+            partitions.0.first().unwrap().is_special,
+        )
+    } else {
+        quote!()
+    };
+    let right_match_arms = if !partitions.1.is_empty() {
+        joint_match_currency_bool(
+            partitions.1.as_slice(),
+            partitions.1.first().unwrap().is_special,
+        )
+    } else {
+        quote!()
+    };
 
     quote!(
         /// Returns true if the currency is a special currency
@@ -540,8 +566,10 @@ fn is_superseded_method(data: &[IsoData]) -> TokenStream {
         ///
         /// In case the currency is not superseded by another it will return `None`
         pub fn is_superseded(self) -> Option<Self> {
+            #[allow(clippy::match_single_binding)]
             match self {
                 #match_arms
+                #[allow(unreachable_patterns)]
                 _ => None
             }
         }
@@ -725,10 +753,16 @@ fn build_country_map(isodata: &[IsoData]) -> HashMap<String, Vec<String>> {
 
 fn main() {
     println!("cargo:rerun-if-changed={TSV_TABLE_PATH}");
-    
+
     let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join("isodata.rs");
 
-    let isodata = read_table();
+    let mut isodata = read_table();
+    isodata.retain(|c| std::env::var(format!("CARGO_FEATURE_{}", c.alpha3.to_uppercase())).is_ok());
+
+    if isodata.is_empty() {
+        panic!("\n\x1b[31;1mNo currency has been enabled for iso_country.\x1b[0m\nYou should enable at least one currency in features.\n");
+    }
+
     let country_map = build_country_map(&isodata);
 
     {
