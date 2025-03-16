@@ -67,6 +67,8 @@ impl std::fmt::Display for ParseCurrencyError {
     }
 }
 
+impl std::error::Error for ParseCurrencyError {}
+
 impl std::fmt::Debug for CurrencySymbol {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "{}", self.symbol)
