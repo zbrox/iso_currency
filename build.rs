@@ -131,6 +131,7 @@ fn write_enum(file: &mut BufWriter<File>, data: &[IsoData]) {
         #[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
         #[cfg_attr(feature = "iterator", derive(EnumIter))]
         #[cfg_attr(feature = "with-schemars", derive(JsonSchema))]
+        #[cfg_attr(feature = "with-specta", derive(specta::Type))]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
         pub enum Currency {
             #body
