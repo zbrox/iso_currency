@@ -19,6 +19,7 @@ with-schemars = ["dep:schemars", "with-serde"]
 with-sqlx-sqlite = ["dep:sqlx", "sqlx/sqlite"]
 with-sqlx-postgres = ["dep:sqlx", "sqlx/postgres"]
 with-sqlx-mysql = ["dep:sqlx", "sqlx/mysql"]
+with-specta = ["dep:specta", "with-serde"]
 
 [dependencies]
 iso_country = "0.1.4"
@@ -26,6 +27,7 @@ schemars = { version = "0.8.16", optional = true }
 serde = { version = "1.0.127", optional = true, features = ["derive"] }
 strum = { version = "0.27.1", optional = true, features = ["derive"] }
 sqlx = { version = ">0.7", optional = true }
+specta = { version = "2.0.0-rc.25", features = ["derive"], optional = true }
 
 [dev-dependencies]
 divan = "0.1.11"
