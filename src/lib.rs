@@ -359,11 +359,16 @@ mod tests {
             Currency::from_country(Country::IO),
             vec![Currency::GBP, Currency::USD]
         );
+        assert_eq!(
+            Currency::from_country(Country::HR),
+            vec![Currency::EUR, Currency::HRK]
+        );
     }
 
     #[test]
     fn test_from_country_trait() {
         assert_eq!(Currency::from(Country::AF), Currency::AFN);
         assert_eq!(Currency::from(Country::IO), Currency::GBP);
+        assert_eq!(Currency::from(Country::HR), Currency::EUR);
     }
 }
