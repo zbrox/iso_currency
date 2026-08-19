@@ -21,6 +21,7 @@ The crate has some optional features:
 - `with-serde`
 - `iterator`
 - `with-schemars`
+- `with-specta`
 - `with-sqlx-sqlite`
 - `with-sqlx-postgres`
 - `with-sqlx-mysql`
@@ -43,6 +44,12 @@ let mut iter = Currency::iter();
 ### with-schemars
 
 If you need to generate a JSON schema for your project, you can use the `with-schemars` feature. This will derive [`schemars's`](https://crates.io/crates/schemars) `JsonSchema` trait on `Currency`.
+
+**NOTE**: This feature enables `with-serde` as well.
+
+### with-specta
+
+If you need to export types for your project, you can use the `with-specta` feature. This will derive [`specta's`](https://crates.io/crates/specta) `Type` trait on `Currency`.
 
 **NOTE**: This feature enables `with-serde` as well.
 
