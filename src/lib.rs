@@ -330,12 +330,14 @@ mod tests {
     fn test_is_superseded() {
         assert_eq!(Currency::VES.is_superseded(), Some(Currency::VED));
         assert_eq!(Currency::VED.is_superseded(), None);
+        assert_eq!(Currency::BGN.is_superseded(), Some(Currency::EUR));
     }
 
     #[test]
     fn test_latest() {
         assert_eq!(Currency::VED.latest(), Currency::VED);
         assert_eq!(Currency::VES.latest(), Currency::VED);
+        assert_eq!(Currency::BGN.latest(), Currency::EUR);
     }
 
     #[test]
@@ -363,6 +365,10 @@ mod tests {
             Currency::from_country(Country::HR),
             vec![Currency::EUR, Currency::HRK]
         );
+        assert_eq!(
+            Currency::from_country(Country::BG),
+            vec![Currency::BGN, Currency::EUR]
+        );
     }
 
     #[test]
@@ -370,5 +376,6 @@ mod tests {
         assert_eq!(Currency::from(Country::AF), Currency::AFN);
         assert_eq!(Currency::from(Country::IO), Currency::GBP);
         assert_eq!(Currency::from(Country::HR), Currency::EUR);
+        assert_eq!(Currency::from(Country::BG), Currency::EUR);
     }
 }

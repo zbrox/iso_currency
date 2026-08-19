@@ -12,7 +12,7 @@ AZN	944	Azerbaijani manat	AZ	₼		2
 BAM	977	Bosnia and Herzegovina convertible mark	BA	KM		2	
 BBD	052	Barbados dollar	BB	Bds$		2	
 BDT	050	Bangladeshi taka	BD	৳		2	
-BGN	975	Bulgarian lev	BG	лв.		2	
+BGN	975	Bulgarian lev	BG	лв.		2	superseded(EUR)
 BHD	048	Bahraini dinar	BH	.د.ب		3	
 BIF	108	Burundian franc	BI	FBu		0	
 BMD	060	Bermudian dollar	BM	$		2	
@@ -47,7 +47,7 @@ DZD	012	Algerian dinar	DZ	دج		2
 EGP	818	Egyptian pound	EG	£	pt	2	
 ERN	232	Eritrean nakfa	ER	Nfk		2	
 ETB	230	Ethiopian birr	ET	Br		2	
-EUR	978	Euro	AX;AD;AT;BE;CY;EE;FI;FR;TF;DE;GR;GP;HR;IE;IT;LV;LT;LU;MT;GF;MQ;YT;MC;ME;NL;PT;RE;BL;MF;PM;SM;SK;SI;ES;VA	€		2	
+EUR	978	Euro	AX;AD;AT;BE;BG;CY;EE;FI;FR;TF;DE;GR;GP;HR;IE;IT;LV;LT;LU;MT;GF;MQ;YT;MC;ME;NL;PT;RE;BL;MF;PM;SM;SK;SI;ES;VA	€		2	
 FJD	242	Fiji dollar	FJ	FJ$		2	
 FKP	238	Falkland Islands pound	FK	£		2	
 GBP	826	Pound sterling	GB;IO;IM;JE;GG	£	p	2	
