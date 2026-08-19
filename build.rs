@@ -641,6 +641,21 @@ fn from_country_method(country_map: &HashMap<String, Vec<String>>) -> TokenStrea
         .collect();
     quote!(
         /// Returns a list of currencies used in a country
+        ///
+        /// The list includes superseded currencies. To get the current regular
+        /// currency, use `Currency::from(country)`.
+        ///
+        /// # Example
+        ///
+        /// ```
+        /// use iso_currency::{Country, Currency};
+        ///
+        /// assert_eq!(
+        ///     Currency::from_country(Country::BG),
+        ///     vec![Currency::BGN, Currency::EUR]
+        /// );
+        /// assert_eq!(Currency::from(Country::BG), Currency::EUR);
+        /// ```
         pub fn from_country(country: Country) -> Vec<Self> {
             match country {
                 #match_arms
