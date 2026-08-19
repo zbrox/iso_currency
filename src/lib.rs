@@ -323,6 +323,7 @@ mod tests {
     #[test]
     fn test_is_special() {
         assert!(Currency::XBA.is_special());
+        assert!(Currency::XAD.is_special());
         assert!(!Currency::EUR.is_special());
     }
 
@@ -344,6 +345,7 @@ mod tests {
     fn test_flags() {
         assert_eq!(Currency::BOV.flags(), vec![Flag::Fund]);
         assert_eq!(Currency::XBA.flags(), vec![Flag::Special]);
+        assert_eq!(Currency::XAD.flags(), vec![Flag::Special]);
         assert_eq!(Currency::VES.flags(), vec![Flag::Superseded(Currency::VED)]);
         assert_eq!(Currency::VED.flags(), vec![]);
     }
