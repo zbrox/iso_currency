@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader, BufWriter, Write};
@@ -624,7 +624,7 @@ fn has_flag_method(data: &[IsoData]) -> TokenStream {
     )
 }
 
-fn from_country_method(country_map: &HashMap<String, Vec<String>>) -> TokenStream {
+fn from_country_method(country_map: &BTreeMap<String, Vec<String>>) -> TokenStream {
     let match_arms: TokenStream = country_map
         .iter()
         .map(|(country, currencies)| {
@@ -668,7 +668,7 @@ fn from_country_method(country_map: &HashMap<String, Vec<String>>) -> TokenStrea
 fn write_enum_impl(
     file: &mut BufWriter<File>,
     data: &[IsoData],
-    country_map: &HashMap<String, Vec<String>>,
+    country_map: &BTreeMap<String, Vec<String>>,
 ) {
     let numeric_method = generate_numeric_method(data);
     let name_method = name_method(data);
@@ -726,8 +726,8 @@ fn write_enum_impl(
     write!(file, "{}", outline).unwrap();
 }
 
-fn build_country_map(isodata: &[IsoData]) -> HashMap<String, Vec<String>> {
-    let mut country_map = HashMap::new();
+fn build_country_map(isodata: &[IsoData]) -> BTreeMap<String, Vec<String>> {
+    let mut country_map = BTreeMap::new();
     for currency in isodata.iter() {
         if let Some(used_by) = &currency.used_by {
             for country in used_by.iter() {
